@@ -19,18 +19,18 @@ class PerformanceFeedback extends Model
     // 1:M with skp_evaluations
     public function skpEvaluation(): BelongsTo
     {
-        return $this->belongsTo(SkpEvaluation::class, 'evaluation_id', 'evaluation_id');
+        return $this->belongsTo(SkpEvaluation::class, 'evaluation_id');
     }
 
     // 1:M with work_results
     public function workResult(): BelongsTo
     {
-        return $this->belongsTo(workResult::class, 'work_result_id', 'work_result_id');
+        return $this->belongsTo(workResult::class, 'work_result_id');
     }
 
     // 1:M with user
     public function userProvided(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'provided_by_id', 'user_id');
+        return $this->belongsTo(User::class, 'provided_by_id');
     }
 }

@@ -21,16 +21,16 @@ class SkpSeeder extends Seeder
         $rektor = User::where('nip', '1001')->first();
         $dekan = User::where('nip', '1002')->first();
         $dosen = User::where('nip', '1003')->first();
-        $pkRektor = PerformanceAgreement::where('user_id', $rektor->user_id)->first();
+        $pkRektor = PerformanceAgreement::where('user_id', $rektor->id)->first();
 
         // dd([$rektor, $dekan, $dosen, $pkRektor]);
 
         if ($dekan && $dosen && $pkRektor) {
-            $skpDekan = SkpPlan::updateOrCreate(['user_id' => $dekan->user_id, 'year' => '2024'],  [
+            $skpDekan = SkpPlan::updateOrCreate(['user_id' => $dekan->id, 'year' => '2024'],  [
                 'duration_start' => '2024-01-01',
                 'duration_end' => '2024-12-31',
                 'status' => 'approved',
-                'approver_id' => $rektor->user_id,
+                'approver_id' => $rektor->id,
             ]);
 
             // cascading
@@ -52,11 +52,11 @@ class SkpSeeder extends Seeder
             ]);
 
             // skp dosen
-            $skpDosen =  SkpPlan::updateOrCreate(['user_id' =>  $dosen->user_id, 'year' => '2024'], [
+            $skpDosen =  SkpPlan::updateOrCreate(['user_id' =>  $dosen->id, 'year' => '2024'], [
                 'duration_start' => '2024-01-01',
                 'duration_end' => '2024-12-31',
                 'status' => 'approved',
-                'approver_id' => $dekan->user_id
+                'approver_id' => $dekan->id
             ]);
 
             WorkCascading::updateOrCreate(['parent_work_result_id' => $workResultDekan->work_result_id], [

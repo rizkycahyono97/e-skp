@@ -20,6 +20,6 @@ class WorkRealization extends Model
     // 1:M with work_results
     public function workResult(): BelongsTo 
     {
-        return $this->belongsTo(WorkResult::class, 'work_result_id', 'work_result_id');
+        return $this->belongsTo(WorkResult::class, 'work_result_id');
     }
 }

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('work_realizations', function (Blueprint $table) {
-            $table->id('work_realization_id')->primary();
-            $table->foreignId('work_result_id')->nullable()->constrained('work_results', 'work_result_id')->onDelete('set null');
+            $table->id();
+            $table->foreignId('work_result_id')->nullable()->constrained('work_results')->onDelete('set null');
             $table->text('realization_desc');
             $table->dateTime('submitted_at');
             $table->enum('status', ['draft', 'submitted', 'evaluated']);

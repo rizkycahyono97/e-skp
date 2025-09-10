@@ -29,6 +29,7 @@ class UserSeeder extends Seeder
 
         // user dummy
         $userRektor = User::firstOrCreate(['nip' => '1001'], [
+            'name' => 'Rektor',
             'username' => 'Prof Dr. Rektor',
             'email' => 'rektor@unida.ac.id',
             'password' => Hash::make('test123'),
@@ -38,6 +39,7 @@ class UserSeeder extends Seeder
         $userRektor->assignRole('Rektor');
 
         $userDekan = User::firstOrCreate(['nip' => '1002'], [
+            'name' => 'Dekan',
             'username' => 'Dr. Dekan',
             'email' => 'dekan@unida.ac.id',
             'password' => Hash::make('test123'),
@@ -47,6 +49,7 @@ class UserSeeder extends Seeder
         $userDekan->assignRole('Dekan');
 
         $userKaprodi = User::firstOrCreate(['nip' => '1003'], [
+            'name' => 'Kaprodi',
             'username' => 'Dr. Kaprodi',
             'email' => 'kaprodi@unida.ac.id',
             'password' => Hash::make('test123'),
@@ -56,6 +59,7 @@ class UserSeeder extends Seeder
         $userKaprodi->assignRole('Kaprodi');
 
         $userDosen = User::firstOrCreate(['nip' => '1004'], [
+            'name' => 'Dosen',
             'username' => 'Dr. Dosen',
             'email' => 'dosen@unida.ac.id',
             'password' => Hash::make('test123'),

@@ -23,26 +23,31 @@ class PerformanceAgreement extends Model
 
     // 1:M with attachments
     public function attachments(): HasMany {
-        return $this->hasMany(Attachment::class, 'pa_id', 'pa_id');
+        return $this->hasMany(Attachment::class, 'pa_id');
     }
 
     // 1:M with skp_plans
     public function skpPlans(): HasMany {
-        return $this->hasMany(SkpPlan::class, 'pa_id', 'pa_id');
+        return $this->hasMany(SkpPlan::class, 'pa_id');
     }
 
     // 1:M with user
     public function user(): HasOne {
-        return $this->hasOne(User::class, 'user_id', 'user_id');
+        return $this->hasOne(User::class, 'user_id');
     }
 
     // 1:M with user
     public function userApprover(): HasOne {
-        return $this->hasOne(User::class, 'approver_id', 'user_id');
+        return $this->hasOne(User::class, 'approver_id');
     }
 
     // 1:M with categories
     public function category(): HasOne {
-        return $this->hasOne(Category::class, 'category_id', 'category_id');
+        return $this->hasOne(Category::class, 'category_id');
+    }
+
+    public function workResults(): HasMany
+    {
+        return $this->hasMany(WorkResult::class, 'pa_id');
     }
 }

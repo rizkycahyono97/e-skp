@@ -15,11 +15,11 @@ class Category extends Model
 
     // 1:M with performance_agreements
     public function performanceAgremeents(): HasMany {
-        return $this->hasMany(PerformanceAgreement::class, 'category_id', 'category_id');
+        return $this->hasMany(PerformanceAgreement::class, 'category_id');
     }
 
     // 1:M with skp_plans
     public function skpPlans(): HasMany {
-        return $this-> hasMany(SkpPlan::class, 'category_id', 'category_id');
+        return $this-> hasMany(SkpPlan::class, 'category_id');
     }
 }

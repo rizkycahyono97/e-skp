@@ -25,43 +25,43 @@ class SkpPlan extends Model
 
     // 1:1 with skpEvaluations
     public function skpEvaluation(): HasOne {
-        return $this->hasOne(SkpPlan::class, 'skp_id', 'skp_id');
+        return $this->hasOne(SkpPlan::class, 'skp_id');
     }
 
     // 1:M with work_cascadings (pivot)
     public function workCascadings(): HasMany {
-        return $this->hasMany(workCascading::class, 'child_skp_id', 'skp_id');
+        return $this->hasMany(workCascading::class, 'child_skp_id');
     }
 
     // 1:M with work_result
     public function workResults(): HasMany {
-        return $this->hasMany(WorkResult::class, 'skp_id', 'skp_id');
+        return $this->hasMany(WorkResult::class, 'skp_id');
     }
 
     // 1:1 with users
     public function user(): BelongsTo {
-        return $this->belongsTo(User::class, 'user_id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     // 1:M with users
     public function userApprover():BelongsTo
     {
-        return $this->belongsTo(User::class, 'approver_id', 'user_id');
+        return $this->belongsTo(User::class, 'approver_id');
     }
     // 1:M with performance_agreements
     public function performanceAgreement(): BelongsTo {
-        return $this->belongsTo(PerformanceAgreement::class, 'pa_id', 'pa_id');
+        return $this->belongsTo(PerformanceAgreement::class, 'pa_id');
     }
 
     // 1:M with attachments
     public function attachments(): HasMany {
-        return $this->hasMany(Attachment::class, 'skp_id', 'skp_id');
+        return $this->hasMany(Attachment::class, 'skp_id');
     }
 
     // 1:M with categories
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'category_id', 'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
 }

@@ -25,18 +25,18 @@ class SkpEvaluation extends Model
     // 1:M with performance_feedback
     public function performanceFeedbacks(): HasMany 
     {
-        return $this->hasMany(PerformanceFeedback::class, 'evaluation_id', 'evaluation_id');
+        return $this->hasMany(PerformanceFeedback::class, 'evaluation_id');
     }
 
     // 1:1 with skp_plans
     public function skpPlan(): BelongsTo
     {
-        return $this->belongsTo(skpPlan::class, 'skp_id', 'skp_id');
+        return $this->belongsTo(skpPlan::class, 'skp_id');
     }
 
     // 1:M with users
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'evaluated_by', 'user_id');
+        return $this->belongsTo(User::class, 'evaluated_by');
     }
 }

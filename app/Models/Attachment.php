@@ -21,12 +21,12 @@ class Attachment extends Model
     // 1:M with performance_agremeents
     public function performanceAgremeent(): BelongsTo 
     {
-        return $this->belongsTo(PerformanceAgreement::class, 'pa_id', 'pa_id');
+        return $this->belongsTo(PerformanceAgreement::class, 'pa_id');
     }
 
     // 1:M with skp_plans
     public function skpPlan(): BelongsTo 
     {
-        return $this->belongsTo(SkpPlan::class, 'skp_id', 'skp_id');
+        return $this->belongsTo(SkpPlan::class, 'skp_id');
     }
 }

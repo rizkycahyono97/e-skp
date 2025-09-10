@@ -21,32 +21,36 @@ class WorkResult extends Model
     // 1:M with work_realizations
     public function workRealizations(): HasMany
     {
-        return $this->hasMany(WorkRealization::class, 'work_result_id', 'work_result_id');
+        return $this->hasMany(WorkRealization::class, 'work_result_id');
     }
 
     // 1:M with indicators
     public function indicators(): HasMany
     {
-        return $this->hasMany(Indicator::class, 'work_result_id', 'work_result_id');
+        return $this->hasMany(Indicator::class, 'work_result_id');
     }
 
     // 1:M with work_cascadings
     public function workCascadings(): HasMany
     {
-        return $this->hasMany(WorkCascading::class, 'parent_work_result_id', 'work_result_id');
+        return $this->hasMany(WorkCascading::class, 'parent_work_result_id');
     }
 
     // 1:M with performance_feedback
     public function performanceFeedbacks(): HasMany
     {
-        return $this->hasMany(PerformanceFeedback::class, 'work_result_id', 'work_result_id');
+        return $this->hasMany(PerformanceFeedback::class, 'work_result_id');
     }
 
     // 1:M with skp_plans
     public function skpPlan(): BelongsTo
     {
-        return $this->belongsTo(SkpPlan::class, 'skp_id', 'skp_id');
+        return $this->belongsTo(SkpPlan::class, 'skp_id');
     }
 
-
+     // 1:M performanceAgreement
+    public function performanceAgreement(): BelongsTo
+    {
+        return $this->belongsTo(PerformanceAgreement::class, 'skp_id');
+    }
 }

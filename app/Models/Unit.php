@@ -17,11 +17,11 @@ class Unit extends Model
 
     // 1:M with users
     public function users(): HasMany {
-        return $this->hasMany(User::class, 'unit_id', 'unit_id');
+        return $this->hasMany(User::class, 'unit_id');
     }
 
     // 1:M self relation
     public function units(): HasMany {
-        return $this->hasMany(Unit::class, 'parent_unit_id', 'unit_id');
+        return $this->hasMany(Unit::class, 'parent_unit_id');
     }
 }

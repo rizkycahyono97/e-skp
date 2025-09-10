@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('work_cascadings', function (Blueprint $table) {
-            $table->id('cascading_id')->primary();
-            $table->foreignId('parent_work_result_id')->constrained('work_results', 'work_result_id')->onDelete('cascade');
-            $table->foreignId('child_skp_id')->constrained('skp_plans', 'skp_id')->onDelete('cascade');
+            $table->id();
+            $table->foreignId('parent_work_result_id')->nullable()->constrained('work_results')->onDelete('cascade');
+            $table->foreignId('child_skp_id')->nullable()->constrained('skp_plans')->onDelete('cascade');
             $table->timestamps();
         });
     }

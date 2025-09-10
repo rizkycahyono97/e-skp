@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('performance_feedback', function (Blueprint $table) {
-            $table->id('feedback_id')->primary();
-            $table->foreignId('evaluation_id')->constrained('skp_evaluations', 'evaluation_id')->onDelete('cascade');
-            $table->foreignId('work_result_id')->constrained('work_results', 'work_result_id')->onDelete('cascade');
-            $table->foreignId('provided_by_id')->nullable()->constrained('users', 'user_id')->onDelete('set null');
+            $table->id();
+            $table->foreignId('evaluation_id')->constrained('skp_evaluations')->onDelete('cascade');
+            $table->foreignId('work_result_id')->constrained('work_results')->onDelete('cascade');
+            $table->foreignId('provided_by_id')->nullable()->constrained('users')->onDelete('set null');
             $table->text('feedback_note');
             $table->enum('rating', ['dibawah_ekspektasi', 'sesuai_ekspektasi', 'diatas_ekspektasi']);
             $table->timestamps();

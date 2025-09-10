@@ -54,46 +54,46 @@ class User extends Authenticatable
     // 1:M with units
     public function unit(): BelongsTo 
     {
-        return $this->belongsTo(Unit::class, 'unit_id', 'unit_id');
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 
     // 1:M with positions
     public function position(): BelongsTo
     {
-        return $this->belongsTo(Position::class, 'position_id', 'position_id');
+        return $this->belongsTo(Position::class, 'position_id');
     }
 
     // 1:M with performance_agreements
     public function performanceAgremeents(): HasMany
     {
-        return $this->hasMany(PerformanceAgreement::class, 'user_id', 'user_id');
+        return $this->hasMany(PerformanceAgreement::class, 'user_id');
     }
 
     // 1:M with performance_agreements
     public function performanceAgremeentApprovers(): HasMany
     {
-        return $this->hasMany(PerformanceAgreement::class, 'approver_id', 'user_id');
+        return $this->hasMany(PerformanceAgreement::class, 'approver_id');
     }
 
     // 1:M with performance_feedback
     public function performanceFeedbacks(): HasMany 
     {
-        return $this->hasMany(PerformanceFeedback::class, 'provided_by_id', 'user_id');
+        return $this->hasMany(PerformanceFeedback::class, 'provided_by_id');
     }
 
     // 1:M with skp_evaluations
     public function skpEvaluations(): HasMany
     {
-        return $this->hasMany(SkpEvaluation::class, 'evaluated_by', 'user_id');
+        return $this->hasMany(SkpEvaluation::class, 'evaluated_by');
     }
 
     // 1:1 with skp_plans
     public function skpPlan(): HasOne {
-        return $this->hasOne(SkpPlan::class, 'user_id', 'user_id');
+        return $this->hasOne(SkpPlan::class, 'user_id');
     }
 
     // 1:M with skp_plans
     public function skpPlansApprovers(): HasMany {
-        return $this->hasMany(SkpPlan::class, 'approver_id', 'user_id');
+        return $this->hasMany(SkpPlan::class, 'approver_id');
     }
 }

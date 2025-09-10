@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('work_results', function (Blueprint $table) {
-            $table->id('work_result_id')->primary();
-            $table->foreignId('skp_id')->nullable()->constrained('skp_plans', 'skp_id')->onDelete('set null');
+            $table->id();
+            $table->foreignId('skp_id')->nullable()->constrained('skp_plans')->onDelete('set null');
+            $table->foreignId('pa_id')->nullable()->constrained('performance_agreements')->onDelete('set null');
             $table->text('description');
-            $table->string('penugasan_dari');
+            $table->string('penugasan_dari')->nullable();
             $table->boolean('is_from_cascading');
             $table->timestamps();
         });

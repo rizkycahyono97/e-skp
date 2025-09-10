@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('indicators', function (Blueprint $table) {
-            $table->id('indicator_id')->primary();
-            $table->foreignId('work_result_id')->nullable()->constrained('work_results', 'work_result_id')->onDelete('set null');
+            $table->id();
+            $table->foreignId('work_result_id')->nullable()->constrained('work_results')->onDelete('set null');
             $table->text('description');
             $table->string('target', length:100);
-            $table->string('perspektif');
+            $table->string('perspektif')->nullable();
             // $table->boolean('is_manual');
             $table->timestamps();
         });

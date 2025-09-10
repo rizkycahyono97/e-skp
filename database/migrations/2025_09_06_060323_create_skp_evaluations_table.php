@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('skp_evaluations', function (Blueprint $table) {
-            $table->id('evaluation_id')->primary();
-            $table->foreignId('skp_id')->nullable()->constrained('skp_plans', 'skp_id')->onDelete('set null');
-            $table->foreignId('evaluated_by')->nullable()->constrained('users', 'user_id')->onDelete('set null');
+            $table->id();
+            $table->foreignId('skp_id')->nullable()->constrained('skp_plans')->onDelete('set null');
+            $table->foreignId('evaluated_by')->nullable()->constrained('users')->onDelete('set null');
             $table->enum('organizational_performance_score', ['sangat_kurang', 'kurang', 'cukup', 'baik', 'sangat_baik', 'sempurna']);
             $table->enum('final_rating_work', ['dibawah_ekspektasi', 'sesuai_ekspektasi', 'diatas_ekspektasi']);
             $table->enum('final_rating_behavior', ['dibawah_ekspektasi', 'sesuai_ekspektasi', 'diatas_ekspektasi']);

@@ -19,7 +19,7 @@ class PerformanceAgreementsSeeder extends Seeder
         $rektor = User::where('nip', '1001')->first();
 
         if ($rektor) {
-            $pk = PerformanceAgreement::firstOrCreate(['user_id' => $rektor->user_id, 'year' => 2024], [
+            $pk = PerformanceAgreement::firstOrCreate(['user_id' => $rektor->id, 'year' => 2024], [
                 'title' => 'Perjanjian Kinerja Rektor 2024',
                 'status' => 'approved',
             ]);
@@ -27,7 +27,7 @@ class PerformanceAgreementsSeeder extends Seeder
             $workResult = WorkResult::updateOrCreate(
                 ['description' => 'Meningkatkan Jumlah Publikasi Internasional'],
                 [
-                    'pa_id' => $pk->pa_id,  // masih error tidak bisa diisi
+                    'id' => $pk->pa_id,  // masih error tidak bisa diisi
                     'skp_id' => null,
                     'is_from_cascading' => true,
                 ]
@@ -39,7 +39,7 @@ class PerformanceAgreementsSeeder extends Seeder
             //     $workResult->update(['pa_id' =>  $pk->pa_id]);
             // }
 
-            Indicator::firstOrCreate(['indicator_id' => $workResult->work_result_id], [
+            Indicator::firstOrCreate(['id' => $workResult->work_result_id], [
                 'description' => 'Jumlah publikasi international terindeks',
                 'target' => '100 artikel',
             ]);
