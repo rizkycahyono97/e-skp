@@ -9,7 +9,7 @@
         </a>
     </div>
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg rounded-lg">
 
         {{-- session --}}
         @if (session('success'))
@@ -41,17 +41,22 @@
             </div>
         @endif
 
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-slate-100 uppercase bg-primary dark:bg-gray-700 dark:text-gray-400 ">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border border-primary">
+            <thead class="text-xs text-slate-100 uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    {{-- 2. Garis kolom ditambahkan dengan border-r --}}
-                    <th scope="col" class="px-6 py-3 border-r border-gray-200 dark:border-gray-700">
+                    {{-- 1. Kolom "No" dibuat jadi yang terkecil --}}
+                    <th scope="col"
+                        class="px-6 py-3 border-r border-gray-200 dark:border-gray-700 w-1 whitespace-nowrap">
                         No
                     </th>
-                    <th scope="col" class="px-6 py-3 border-r border-gray-200 dark:border-gray-700">
+
+                    {{-- 2. Kolom "Role Name" dibuat mengisi semua sisa ruang --}}
+                    <th scope="col" class="px-6 py-3 border-r border-gray-200 dark:border-gray-700 w-full">
                         Role Name
                     </th>
-                    <th scope="col" class="px-6 py-3">
+
+                    {{-- 3. Kolom "Action" dibuat jadi yang terkecil --}}
+                    <th scope="col" class="px-6 py-3 w-1 whitespace-nowrap">
                         Action
                     </th>
                 </tr>
@@ -59,7 +64,7 @@
             <tbody>
                 @forelse ($roles as $role)
                     <tr
-                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-100 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
+                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-100 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200 last:border-b-0">
                         <td class="px-6 py-4 border-r border-gray-200 dark:border-gray-700">
                             {{ $loop->iteration + ($roles->currentPage() - 1) * $roles->perPage() }}
                         </td>
@@ -68,8 +73,8 @@
                             {{ $role->name }}
                         </td>
                         {{-- action --}}
-                        <td class="px-4 py-4"> {{-- px-0 diubah ke px-4 agar ada jarak --}}
-                            <div class="flex items-center space-x-2"> {{-- space-x-4 dikurangi --}}
+                        <td class="px-4 py-4">
+                            <div class="flex justify-end space-x-2">
                                 <a href="{{ route('roles.edit', $role->id) }}">
                                     <button type="button"
                                         class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-xs px-3 py-1.5 text-center">Edit</button>
