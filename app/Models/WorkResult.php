@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Permission\Traits\HasRoles;
+
+class WorkResult extends Model
+{
+    use HasFactory, HasRoles;
+
+    protected $fillable = [
+        'description',
+        'penugasan_dari',
+        'is_from_cascading'
+    ];
+
+    // 1:M with work_realizations
+    public function workRealizations(): HasMany
+    {
+        return $this->hasMany(WorkRealization::class, 'work_result_id', 'work_result_id');
+    }
+
+    // 1:M with indicators
+    public function indicators(): HasMany
+    {
+        return $this->hasMany(Indicator::class, 'work_result_id', 'work_result_id');
+    }
+
+    // 1:M with work_cascadings
+    public function workCascadings(): HasMany
+    {
+        return $this->hasMany(WorkCascading::class, 'parent_work_result_id', 'work_result_id');
+    }
+
+    // 1:M with performance_feedback
+    public function performanceFeedbacks(): HasMany
+    {
+        return $this->hasMany(PerformanceFeedback::class, 'work_result_id', 'work_result_id');
+    }
+
+    // 1:M with skp_plans
+    public function skpPlan(): BelongsTo
+    {
+        return $this->belongsTo(SkpPlan::class, 'skp_id', 'skp_id');
+    }
+
+
+}
