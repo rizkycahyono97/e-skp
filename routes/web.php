@@ -12,4 +12,4 @@ Route::get('/dashboard', function () {
 })->name('dashboard');
 
 // role
-Route::get('/roles/index', [RoleController::class, 'index'])->name('roles.index');
+Route::resource('/roles', RoleController::class);
