@@ -57,6 +57,21 @@
         </select>
     </div>
 
+    <div class="sm:col-span-2">
+        <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+        <select id="role" name="role"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            <option selected disabled>Choose a role</option>
+            @foreach ($roles as $role)
+                <option value="{{ $role->name }}" {{-- Cek apakah user sudah memiliki role ini --}}
+                    @if (isset($user) && $user->hasRole($role->name)) selected @endif>
+                    {{ $role->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+
     {{-- Password Input --}}
     <div class="sm:col-span-2">
         <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>

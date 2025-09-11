@@ -20,7 +20,11 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
     
+    Route::middleware('role:Super Admin')->group(function () {
+        Route::resource('/users', UserController::class);
+    });
+
+
     Route::resource('/roles', RoleController::class);
-    Route::resource('/users', UserController::class);
     Route::resource('/positions', PositionController::class);
 });

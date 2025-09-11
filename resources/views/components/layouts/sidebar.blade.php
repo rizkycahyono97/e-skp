@@ -19,6 +19,8 @@
                             <span class="ms-3">Dashboard</span>
                         </a>
                     </li>
+
+                    {{-- Master --}}
                     <li>
                         <button type="button"
                             class="flex items-center w-full p-2 text-base text-slate-100 transition duration-75 rounded-lg group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700"
@@ -37,18 +39,26 @@
                             </svg>
                         </button>
                         <ul id="dropdown-example" class="hidden py-2 space-y-2">
-                            <li>
-                                <a href="{{ route('users.index') }}"
-                                    class="flex items-center w-full p-2 text-slate-100 transition duration-75 rounded-lg pl-11 group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700">User</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('roles.index') }}"
-                                    class="flex items-center w-full p-2 text-slate-100 transition duration-75 rounded-lg pl-11 group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700">Role</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('positions.index') }}"
-                                    class="flex items-center w-full p-2 text-slate-100 transition duration-75 rounded-lg pl-11 group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700">Position</a>
-                            </li>
+                            @role('Super Admin')
+                                <li>
+                                    <a href="{{ route('users.index') }}"
+                                        class="flex items-center w-full p-2 text-slate-100 transition duration-75 rounded-lg pl-11 group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700">User</a>
+                                </li>
+                            @endrole
+
+                            @role('Super Admin')
+                                <li>
+                                    <a href="{{ route('roles.index') }}"
+                                        class="flex items-center w-full p-2 text-slate-100 transition duration-75 rounded-lg pl-11 group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700">Role</a>
+                                </li>
+                            @endrole
+
+                            @role('Super Admin')
+                                <li>
+                                    <a href="{{ route('positions.index') }}"
+                                        class="flex items-center w-full p-2 text-slate-100 transition duration-75 rounded-lg pl-11 group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700">Position</a>
+                                </li>
+                            @endrole
                         </ul>
                     </li>
                 </ul>

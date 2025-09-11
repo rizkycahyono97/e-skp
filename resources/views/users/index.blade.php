@@ -6,7 +6,7 @@
             </button>
         </a>
     </div>
-    <x-table :headers="['No', 'Name', 'Username', 'Nip', 'Email', 'Position', 'Unit', 'Action']" :rows="$users->map(function ($user, $index) use ($users) {
+    <x-table :headers="['No', 'Name', 'Username', 'Nip', 'Email', 'Position', 'Unit', 'Role', 'Action']" :rows="$users->map(function ($user, $index) use ($users) {
         return [
             'no' => $index + 1 + ($users->currentPage() - 1) * $users->perPage(),
             'name' => $user->name,
@@ -15,6 +15,7 @@
             'email' => $user->email,
             'position' => $user->position->position_name,
             'unit' => $user->unit->unit_name,
+            'role' => $user->getRoleNames()->implode(', '),
             'actions' => view('users.partials.actions', compact('user'))->render(),
         ];
     })">
