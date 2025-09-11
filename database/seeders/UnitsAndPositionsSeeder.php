@@ -15,15 +15,15 @@ class UnitsAndPositionsSeeder extends Seeder
     public function run(): void
     {
         // Unit
-        $rektorat = Unit::firstOrCreate(['unit_name' => 'Rektorat']);
-        $fakultas = Unit::firstOrCreate(['unit_name' => 'Fakultas', 'parent_unit_id' => $rektorat->unit_id]);
-        $prodi = Unit::firstOrCreate(['unit_name' => 'Prodi', 'parent_unit_id' => $fakultas->unit_id]);
+        $rektorat = Unit::updateOrCreate(['unit_name' => 'Rektorat']);
+        $fakultas = Unit::updateOrCreate(['unit_name' => 'Fakultas', 'parent_unit_id' => $rektorat->unit_id]);
+        $prodi = Unit::updateOrCreate(['unit_name' => 'Prodi', 'parent_unit_id' => $fakultas->unit_id]);
 
         // position
-        Position::firstOrCreate(['position_name' => 'Rektor']);
-        Position::firstOrCreate(['position_name' => 'Dekan']);
-        Position::firstOrCreate(['position_name' => 'Kaprodi']);
-        Position::firstOrCreate(['position_name' => 'Dosen']);
-        Position::firstOrCreate(['position_name' => 'Tendik']);
+        Position::updateOrCreate(['position_name' => 'Rektor']);
+        Position::updateOrCreate(['position_name' => 'Dekan']);
+        Position::updateOrCreate(['position_name' => 'Kaprodi']);
+        Position::updateOrCreate(['position_name' => 'Dosen']);
+        Position::updateOrCreate(['position_name' => 'Tendik']);
     }
 }
