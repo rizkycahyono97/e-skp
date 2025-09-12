@@ -11,14 +11,31 @@ class PositionController extends Controller
 {
     public function index(): View
     {
+        $header = [
+            'title' => 'Manajemen Posisi',
+            'description' => 'Kelola Master Posisi disini.',
+        ];
+
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Positions', 'url' => null],
+        ];
+
         $positions = Position::latest()->paginate(10);
 
-        return view('positions.index', compact('positions'));
+        return view('positions.index', compact('positions', 'header', 'breadcrumbs'));
     }
 
     public function create()
     {
-        return view('positions.create');
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Positions', 'url' => route('positions.index')],
+            ['name' => 'Create', 'url' => null],
+        ];
+
+
+        return view('positions.create', compact('breadcrumbs'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -40,7 +57,13 @@ class PositionController extends Controller
 
     public function edit(Position $position)
     {
-        return view('positions.edit', compact('position'));
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Positions', 'url' => route('positions.index')],
+            ['name' => 'Edit', 'url' => null],
+        ];
+
+        return view('positions.edit', compact('position','breadcrumbs'));
     }
 
     public function update(Request $request, Position $position): RedirectResponse

@@ -15,18 +15,34 @@ class UserController extends Controller
 {
     public function index(): View
     {
+        $header = [
+            'title' => 'Manajemen Users',
+            'description' => 'Kelola Master User disini.',
+        ];
+
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Users', 'url' => null],
+        ];
+
         $users = User::latest()->paginate(10);
 
-        return view('users.index', compact('users'));
+        return view('users.index', compact('users', 'header', 'breadcrumbs'));
     }
 
     public function create()
     {
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Users', 'url' => route('users.index')],
+            ['name' => 'Create', 'url' => null],
+        ];
+
         $units = Unit::all();
         $positions = Position::all();
         $roles = Role::all();
 
-        return view('users.create', compact('units', 'positions', 'roles'));
+        return view('users.create', compact('units', 'positions', 'roles', 'breadcrumbs'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -55,19 +71,23 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        // $units = Unit::all();
-        // $positions = Position::all();
-
         return view('users.show', compact('user'));
     }
 
     public function edit(User $user)
     {
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Users', 'url' => route('users.index')],
+            ['name' => 'Edit', 'url' => null],
+        ];
+
+
         $units = Unit::all();
         $positions = Position::all();
         $roles = Role::all();
 
-        return view('users.edit', compact('user', 'units', 'positions', 'roles'));
+        return view('users.edit', compact('user', 'units', 'positions', 'roles', 'breadcrumbs'));
     }
 
     public function update(Request $request, User $user): RedirectResponse

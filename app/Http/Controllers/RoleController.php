@@ -11,14 +11,30 @@ class RoleController extends Controller
 {
     public function index(): View
     {
+        $header = [
+            'title' => 'Manajemen Role',
+            'description' => 'Kelola Master role di sini.'
+        ];
+
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Users', 'url' => null],
+        ];
+
         $roles = Role::latest()->paginate(10);
         
-        return view('roles.index', compact('roles'));
+        return view('roles.index', compact('roles', 'header', 'breadcrumbs'));
     }
 
     public function create()
     {
-        return view('roles.create');
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Role', 'url' => route('roles.index')],
+            ['name' => 'Create', 'url' => null],
+        ];
+
+        return view('roles.create', compact('breadcrumbs'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -39,7 +55,13 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        return view('roles.edit', compact('role'));
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Role', 'url' => route('roles.index')],
+            ['name' => 'Edit', 'url' => null],
+        ];
+
+        return view('roles.edit', compact('role', 'breadcrumbs'));
     }
 
     public function update(Request $request, Role $role): RedirectResponse

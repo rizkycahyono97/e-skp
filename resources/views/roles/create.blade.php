@@ -1,4 +1,7 @@
 <x-layouts.app>
+
+    <x-partials.breadcrumbs :items="$breadcrumbs" />
+
     <div
         class="p-8 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md max-w-2xl mx-auto">
 

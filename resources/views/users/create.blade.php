@@ -1,4 +1,7 @@
 <x-layouts.app>
+
+    <x-partials.breadcrumbs :items="$breadcrumbs" />
+
     <div
         class="p-8 mx-auto max-w-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md">
         <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Create User</h2>
