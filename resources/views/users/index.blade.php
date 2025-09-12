@@ -11,7 +11,7 @@
         </x-slot>
     </x-partials.header>
 
-    <x-table :headers="['No', 'Name', 'Username', 'Nip', 'Email', 'Position', 'Unit', 'Role', 'Action']" :rows="$users->map(function ($user, $index) use ($users) {
+    <x-tables.table :headers="['No', 'Name', 'Username', 'Nip', 'Email', 'Position', 'Unit', 'Role', 'Action']" :rows="$users->map(function ($user, $index) use ($users) {
         return [
             'no' => $index + 1 + ($users->currentPage() - 1) * $users->perPage(),
             'name' => $user->name,
@@ -25,5 +25,5 @@
         ];
     })">
 
-    </x-table>
+    </x-tables.table>
 </x-layouts.app>

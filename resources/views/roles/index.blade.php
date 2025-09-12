@@ -11,7 +11,7 @@
         </x-slot>
     </x-partials.header>
 
-    <x-table :headers="['No', 'Role Name', 'Action']" :rows="$roles->map(function ($role, $index) use ($roles) {
+    <x-tables.table :headers="['No', 'Role Name', 'Action']" :rows="$roles->map(function ($role, $index) use ($roles) {
         return [
             'no' => $index + 1 + ($roles->currentPage() - 1) * $roles->perPage(),
             'name' => $role->name,

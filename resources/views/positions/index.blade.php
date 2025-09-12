@@ -12,12 +12,12 @@
     </x-partials.header>
 
     {{-- 3. Komponen Tabel Anda --}}
-    <x-table :headers="['No', 'Position Name', 'Action']" :rows="$positions->map(function ($position, $index) use ($positions) {
+    <x-tables.table :headers="['No', 'Position Name', 'Action']" :rows="$positions->map(function ($position, $index) use ($positions) {
         return [
             'no' => $index + 1 + ($positions->currentPage() - 1) * $positions->perPage(),
             'position_name' => $position->position_name,
             'actions' => view('positions.partials.actions', compact('position'))->render(),
         ];
     })">
-    </x-table>
+    </x-tables.table>
 </x-layouts.app>
