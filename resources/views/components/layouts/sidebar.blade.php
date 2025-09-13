@@ -5,6 +5,8 @@
         <nav class="flex-1 space-y-2">
             <div class="h-full px-3 py-4 overflow-y-auto bg-secondary dark:bg-gray-800">
                 <ul class="space-y-2 font-medium">
+
+                    {{-- dashboard --}}
                     <li>
                         <a href="{{ route('dashboard') }}"
                             class="flex items-center p-2 text-slate-100 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
@@ -20,17 +22,49 @@
                         </a>
                     </li>
 
+                    {{-- PK --}}
+                    <li>
+                        <button type="button"
+                            class="flex items-center w-full p-2 text-base text-slate-100 transition duration-75 rounded-lg group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700"
+                            aria-controls="pk-dropdown" data-collapse-toggle="pk-dropdown">
+                            <svg class="w-5 h-5 text-slate-200 transition duration-75 dark:text-gray-400 dark:group-hover:text-white"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Perjanjian Kerja</span>
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 4 4 4-4" />
+                            </svg>
+                        </button>
+                        <ul id="pk-dropdown" class="hidden py-2 space-y-2">
+                            @role('Super Admin')
+                                <li>
+                                    <a href="{{ route('performance-agreements.index') }}"
+                                        class="flex items-center w-full p-2 text-slate-100 transition duration-75 rounded-lg pl-11 group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700">Perjanjian
+                                        Kerja</a>
+                                </li>
+                            @endrole
+
+                        </ul>
+                    </li>
+
                     {{-- Master --}}
                     <li>
                         <button type="button"
                             class="flex items-center w-full p-2 text-base text-slate-100 transition duration-75 rounded-lg group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700"
-                            aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                            aria-controls="master-dropdown" data-collapse-toggle="master-dropdown">
                             <svg class="shrink-0 w-5 h-5 text-slate-200 transition duration-75 group-hover:text-slate-200 dark:text-gray-400 dark:group-hover:text-white"
-                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                viewBox="0 0 18 21">
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                fill="currentColor" viewBox="0 0 24 24">
                                 <path
-                                    d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
+                                    d="M12 7.205c4.418 0 8-1.165 8-2.602C20 3.165 16.418 2 12 2S4 3.165 4 4.603c0 1.437 3.582 2.602 8 2.602ZM12 22c4.963 0 8-1.686 8-2.603v-4.404c-.052.032-.112.06-.165.09a7.75 7.75 0 0 1-.745.387c-.193.088-.394.173-.6.253-.063.024-.124.05-.189.073a18.934 18.934 0 0 1-6.3.998c-2.135.027-4.26-.31-6.3-.998-.065-.024-.126-.05-.189-.073a10.143 10.143 0 0 1-.852-.373 7.75 7.75 0 0 1-.493-.267c-.053-.03-.113-.058-.165-.09v4.404C4 20.315 7.037 22 12 22Zm7.09-13.928a9.91 9.91 0 0 1-.6.253c-.063.025-.124.05-.189.074a18.935 18.935 0 0 1-6.3.998c-2.135.027-4.26-.31-6.3-.998-.065-.024-.126-.05-.189-.074a10.163 10.163 0 0 1-.852-.372 7.816 7.816 0 0 1-.493-.268c-.055-.03-.115-.058-.167-.09V12c0 .917 3.037 2.603 8 2.603s8-1.686 8-2.603V7.596c-.052.031-.112.059-.165.09a7.816 7.816 0 0 1-.745.386Z" />
                             </svg>
+
                             <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Master</span>
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 10 6">
@@ -38,7 +72,7 @@
                                     stroke-width="2" d="m1 1 4 4 4-4" />
                             </svg>
                         </button>
-                        <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                        <ul id="master-dropdown" class="hidden py-2 space-y-2">
                             @role('Super Admin')
                                 <li>
                                     <a href="{{ route('users.index') }}"
