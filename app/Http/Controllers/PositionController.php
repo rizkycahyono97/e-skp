@@ -52,7 +52,20 @@ class PositionController extends Controller
 
     public function show(Position $position)
     {
-        return view('positions.show', compact('position'));
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Position', 'url' => route('positions.index')],
+            ['name' => 'Show', 'url' => null],
+        ];
+
+        $fields = [
+            ['label' => 'ID', 'value' => $position->id],
+            ['label' => 'Name', 'value' => $position->position_name],
+            ['label' => 'Created At', 'value' => $position->created_at],
+            ['label' => 'Updated At', 'value' => $position->updated_at],
+        ];
+
+        return view('positions.show', compact('position', 'breadcrumbs', 'fields'));
     }
 
     public function edit(Position $position)

@@ -50,7 +50,21 @@ class RoleController extends Controller
 
     public function show(Role $role)
     {
-        return view('roles.show', compact('role'));
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Roles', 'url' => route('roles.index')],
+            ['name' => 'Show', 'url' => null],
+        ];
+
+        $fields = [
+            ['label' => 'ID', 'value' => $role->id],
+            ['label' => 'Role Name', 'value' => $role->name],
+            ['label' => 'Guard Name', 'value' => $role->guard_name],
+            ['label' => 'Created At', 'value' => $role->created_at],
+            ['label' => 'Updated At', 'value' => $role->updated_at],
+        ];
+
+        return view('roles.show', compact('role', 'breadcrumbs', 'fields'));
     }
 
     public function edit(Role $role)

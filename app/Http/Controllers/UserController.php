@@ -71,7 +71,25 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Users', 'url' => route('users.index')],
+            ['name' => 'Show', 'url' => null],
+        ];
+
+         $fields = [
+            ['label' => 'ID', 'value' => $user->id],
+            ['label' => 'Name', 'value' => $user->name],
+            ['label' => 'Username', 'value' => $user->username],
+            ['label' => 'NIP', 'value' => $user->nip],
+            ['label' => 'Email Address', 'value' => $user->email],
+            ['label' => 'Position', 'value' => optional($user->position)->position_name ?? 'N/A'],
+            ['label' => 'Unit', 'value' => optional($user->unit)->unit_name ?? 'N/A'],
+            ['label' => 'Role', 'value' => $user->getRoleNames()->implode(', ')],
+            ['label' => 'Joined On', 'value' => $user->created_at->format('d F Y, H:i')],
+        ];
+
+        return view('users.show', compact('user', 'breadcrumbs', 'fields'));
     }
 
     public function edit(User $user)
