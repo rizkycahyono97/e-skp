@@ -13,6 +13,7 @@ class WorkResult extends Model
     use HasFactory, HasRoles;
 
     protected $fillable = [
+        'work_result_id',
         'description',
         'penugasan_dari',
         'is_from_cascading'
@@ -27,7 +28,7 @@ class WorkResult extends Model
     // 1:M with indicators
     public function indicators(): HasMany
     {
-        return $this->hasMany(Indicator::class, 'work_result_id');
+        return $this->hasMany(Indicator::class, 'work_result_id', 'id');
     }
 
     // 1:M with work_cascadings
@@ -51,6 +52,6 @@ class WorkResult extends Model
      // 1:M performanceAgreement
     public function performanceAgreement(): BelongsTo
     {
-        return $this->belongsTo(PerformanceAgreement::class, 'skp_id');
+        return $this->belongsTo(PerformanceAgreement::class, 'pa_id', 'id');
     }
 }

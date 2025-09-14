@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('pa_id')->nullable()->constrained('performance_agreements')->onDelete('set null');
             $table->text('description');
             $table->string('penugasan_dari')->nullable();
-            $table->boolean('is_from_cascading');
+            $table->boolean('is_from_cascading')->nullable();
             $table->timestamps();
         });
     }

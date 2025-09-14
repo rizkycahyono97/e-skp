@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('work_result_id')->nullable()->constrained('work_results')->onDelete('set null');
             $table->text('description');
-            $table->string('target', length:100);
+            $table->string('target', length:100)->nullable();
             $table->string('perspektif')->nullable();
             // $table->boolean('is_manual');
             $table->timestamps();

@@ -13,6 +13,8 @@ class PerformanceAgreement extends Model
     use HasRoles, HasFactory;
 
     protected $fillable = [
+        'approver_id',
+        'category_id',
         'title',
         'year',
         'status',
@@ -48,6 +50,6 @@ class PerformanceAgreement extends Model
 
     public function workResults(): HasMany
     {
-        return $this->hasMany(WorkResult::class, 'pa_id');
+        return $this->hasMany(WorkResult::class, 'pa_id', 'id');
     }
 }

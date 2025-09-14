@@ -1,6 +1,6 @@
 <div class="flex items-center space-x-2">
 
-    <a href="#" class="group relative flex items-center">
+    <a href="{{ route('performance-agreements.show', $pa->id) }}" class="group relative flex items-center">
         <div class="p-2 text-yellow-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
