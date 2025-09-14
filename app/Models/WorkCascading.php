@@ -11,16 +11,19 @@ class WorkCascading extends Model
 {
     use HasFactory, HasRoles;
     
-    // protected $fillable = [];
+    protected $fillable = [
+        'parent_work_result_id',
+        'target_plan_id',
+    ];
 
     // 1:M with work_result
-    public function workResult(): BelongsTo {
+    public function parentWorkResult(): BelongsTo {
         return $this->belongsTo(WorkResult::class, 'parent_work_result_id');
     }
 
     // 1:M with skp_plans
-    public function skpPlan(): BelongsTo 
+    public function targetPlan(): BelongsTo 
     {
-        return $this->belongsTo(SkpPlan::class, 'child_skp_id');
+        return $this->belongsTo(SkpPlan::class, 'target_plan_id');
     }
 }

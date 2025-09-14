@@ -30,7 +30,7 @@ class SkpPlan extends Model
 
     // 1:M with work_cascadings (pivot)
     public function workCascadings(): HasMany {
-        return $this->hasMany(workCascading::class, 'child_skp_id');
+        return $this->hasMany(workCascading::class, 'target_plan_id');
     }
 
     // 1:M with work_result

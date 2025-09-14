@@ -37,7 +37,7 @@ class SkpSeeder extends Seeder
             $workResultPkRektor = WorkResult::where('pa_id', $pkRektor->pa_id)->first();
             if ($workResultPkRektor) {
                 WorkCascading::updateOrCreate(['parent_work_result_id' => $workResultPkRektor->work_result_id], [
-                    'child_skp_id' => $skpDekan->skp_id
+                    'target_plan_id' => $skpDekan->skp_id
                 ]);
             }
 
@@ -60,7 +60,7 @@ class SkpSeeder extends Seeder
             ]);
 
             WorkCascading::updateOrCreate(['parent_work_result_id' => $workResultDekan->work_result_id], [
-                'child_skp_id' =>  $skpDosen->skp_id
+                'target_plan_id' =>  $skpDosen->skp_id
             ]);
 
             $workResultDosen = WorkResult::updateOrCreate(['skp_id' => $skpDosen->skp_id, 'description' => 'Menyumbang 2 publikasi international'], [
