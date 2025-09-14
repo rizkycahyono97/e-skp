@@ -54,6 +54,9 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // define role
         $roles = [
+            'Super Admin' => [
+                'view dashboard', 'view pk', 'create pk', 'approve pk', 'edit pk', 'manage cascading', 'view skp', 'view reports', 'print documents' 
+            ],
             'Rektor' => [
                 'view dashboard', 'view pk', 'create pk', 'approve pk', 'edit pk', 'manage cascading', 'view skp', 'view reports', 'print documents' 
             ],

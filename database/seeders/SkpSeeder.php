@@ -46,10 +46,10 @@ class SkpSeeder extends Seeder
                 'penugasan_dari' => 'Rektor'
             ]) ;
 
-            Indicator::updateOrCreate(['work_result_id' => $workResultDekan->work_result_id], [
-                'description' => 'Jumlah artikel yang disumbangkan fakultas',
-                'target' => '20 artikel'
-            ]);
+            // Indicator::updateOrCreate(['work_result_id' => $workResultDekan->work_result_id], [
+            //     'description' => 'Jumlah artikel yang disumbangkan fakultas',
+            //     'target' => '20 artikel'
+            // ]);
 
             // skp dosen
             $skpDosen =  SkpPlan::updateOrCreate(['user_id' =>  $dosen->id, 'year' => '2024'], [
@@ -68,10 +68,10 @@ class SkpSeeder extends Seeder
                 'penugasan_dari' => 'Dekan'
             ]);
 
-            Indicator::updateOrCreate(['work_result_id' => $workResultDosen->work_result_id], [
-                'description' => 'Jumlah artikel yang diterbitkan',
-                'target' => '2 artikel'
-            ]);
+            // Indicator::updateOrCreate(['work_result_id' => $workResultDosen->work_result_id], [
+            //     'description' => 'Jumlah artikel yang diterbitkan',
+            //     'target' => '2 artikel'
+            // ]);
         }
     }
 }

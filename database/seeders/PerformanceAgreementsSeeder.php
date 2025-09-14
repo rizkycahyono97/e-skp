@@ -27,7 +27,7 @@ class PerformanceAgreementsSeeder extends Seeder
             $workResult = WorkResult::updateOrCreate(
                 ['description' => 'Meningkatkan Jumlah Publikasi Internasional'],
                 [
-                    'id' => $pk->pa_id,  // masih error tidak bisa diisi
+                    'pa_id' => $pk->id,
                     'skp_id' => null,
                     'is_from_cascading' => true,
                 ]
@@ -39,10 +39,28 @@ class PerformanceAgreementsSeeder extends Seeder
             //     $workResult->update(['pa_id' =>  $pk->pa_id]);
             // }
 
-            Indicator::firstOrCreate(['id' => $workResult->work_result_id], [
-                'description' => 'Jumlah publikasi international terindeks',
-                'target' => '100 artikel',
-            ]);
+            $indicators = [
+                [
+                    'description' => 'Jumlah publikasi international terindeks A',
+                    'target' => '10 artikel',
+                ],
+                [
+                    'description' => 'Jumlah publikasi international terindeks B',
+                    'target' => '20 artikel',
+                ],
+                [
+                    'description' => 'Jumlah publikasi international terindeks C',
+                    'target' => '30 artikel',
+                ]
+                ];
+            foreach ($indicators as $indicator) {
+                Indicator::updateOrCreate(
+                    [
+                        'work_result_id' => $workResult->id,
+                        'description' => $indicator['description'],
+                    ],
+                );
+            }
         }
     }
 }

@@ -15,11 +15,13 @@ class UnitsAndPositionsSeeder extends Seeder
     public function run(): void
     {
         // Unit
+        $superAdmin = Unit::updateOrCreate(['unit_name' => 'Super Admin']);
         $rektorat = Unit::updateOrCreate(['unit_name' => 'Rektorat']);
         $fakultas = Unit::updateOrCreate(['unit_name' => 'Fakultas', 'parent_unit_id' => $rektorat->unit_id]);
         $prodi = Unit::updateOrCreate(['unit_name' => 'Prodi', 'parent_unit_id' => $fakultas->unit_id]);
 
         // position
+        Position::updateOrCreate(['position_name' => 'Super Admin']);
         Position::updateOrCreate(['position_name' => 'Rektor']);
         Position::updateOrCreate(['position_name' => 'Dekan']);
         Position::updateOrCreate(['position_name' => 'Kaprodi']);
