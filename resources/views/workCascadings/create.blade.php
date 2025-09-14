@@ -1,0 +1,103 @@
+<x-layouts.app>
+
+    {{-- Panel atas --}}
+    <div class="p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex items-center justify-between">
+            <div>
+                <h3 class="font-semibold text-gray-800 dark:text-white">Hasil Kerja Induk:</h3>
+                <h3 class="font-semibold text-gray-800 dark:text-white">Indicators Induk:</h3>
+                <p class="text-gray-700 dark:text-gray-300">{{ $parentWorkResult->name }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Milik:
+                    {{ $parentWorkResult->performanceAgreement->user->name }}</p>
+            </div>
+            <div>
+                <button type="submit" form="cascading-form"
+                    class="px-6 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary/80">
+                    Simpan Cascading
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {{-- Form Filter --}}
+    <div class="p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+        <form method="GET" id="cascading-form" action="#" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div>
+                <label for="unit" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Unit</label>
+                <select name="unit" id="unit"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    <option value="">Semua Unit</option>
+                    @foreach ($units as $unit)
+                        <option value="{{ $unit->id }}" @selected($filters['unit'] ?? '' == $unit->id)>{{ $unit->unit_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label for="position" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Posisi</label>
+                <select name="position" id="position"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    <option value="">Semua Posisi</option>
+                    @foreach ($positions as $position)
+                        <option value="{{ $position->id }}" @selected($filters['position'] ?? '' == $position->id)>{{ $position->position_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="flex space-x-2">
+                <button type="submit"
+                    class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80">Filter</button>
+                <a href="#"
+                    class="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500">Reset</a>
+            </div>
+        </form>
+    </div>
+
+    {{-- Form Utama & Tabel User --}}
+    <form method="POST" action="{{ route('work-cascadings.store') }}">
+        @csrf
+        <input type="hidden" name="work_result_id" value="{{ $parentWorkResult->id }}">
+        {{-- Hidden input ini penting untuk memberitahu PA mana yang jadi induk --}}
+        <input type="hidden" name="performance_agreement_id" value="{{ $parentWorkResult->performance_agreement_id }}">
+
+
+        <div
+            class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md overflow-hidden">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-300">
+                    <tr>
+                        <th scope="col" class="p-4"><input type="checkbox" class="rounded"></th>
+                        <th scope="col" class="px-6 py-3">Username</th>
+                        <th scope="col" class="px-6 py-3">Unit</th>
+                        <th scope="col" class="px-6 py-3">Posisi</th>
+                        <th scope="col" class="px-6 py-3">Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($users as $user)
+                        <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td class="w-4 p-4"><input type="checkbox" name="user_ids[]" value="{{ $user->id }}"
+                                    class="rounded"></td>
+                            <th scope="row"
+                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $user->username }}</th>
+                            <td class="px-6 py-4">{{ optional($user->unit)->unit_name ?? '-' }}</td>
+                            <td class="px-6 py-4">{{ optional($user->position)->position_name ?? '-' }}</td>
+                            <td class="px-6 py-4">{{ $user->getRoleNames()->implode(', ') }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-6">Tidak ada user yang cocok dengan filter.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+    </form>
+
+    <div class="mt-4">
+        {{ $users->links() }}
+    </div>
+
+</x-layouts.app>

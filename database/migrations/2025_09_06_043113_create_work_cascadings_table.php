@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('work_cascadings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('parent_work_result_id')->nullable()->constrained('work_results')->cascadeOnDelete();
+            $table->foreignId('parent_indicator_id')->nullable()->constrained('indicators')->cascadeOnDelete();
 
             // child ke table PA
             $table->foreignId('child_pa_id')->nullable()->constrained('performance_agreements')->cascadeOnDelete();

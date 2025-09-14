@@ -17,8 +17,8 @@ class WorkCascading extends Model
     ];
 
     // 1:M with work_result
-    public function parentWorkResult(): BelongsTo {
-        return $this->belongsTo(WorkResult::class, 'parent_work_result_id');
+    public function parentIndicator(): BelongsTo {
+        return $this->belongsTo(Indicator::class, 'parent_indicator_id');
     }
 
     // 1:M with performanc_agreement

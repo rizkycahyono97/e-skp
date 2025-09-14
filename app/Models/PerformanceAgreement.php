@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Permission\Traits\HasRoles;
@@ -34,8 +35,8 @@ class PerformanceAgreement extends Model
     }
 
     // 1:M with user
-    public function user(): HasOne {
-        return $this->hasOne(User::class, 'user_id');
+    public function user(): BelongsTo {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     // 1:M with user

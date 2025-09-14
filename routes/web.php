@@ -5,6 +5,7 @@ use App\Http\Controllers\PerformanceAgreementController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkCascadingController;
 use Illuminate\Support\Facades\Route;
 
 // login
@@ -27,6 +28,15 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:Super Admin|Rektor|Dekan')->group(function () {
         Route::resource('/performance-agreements', PerformanceAgreementController::class);
+    });
+
+    Route::middleware('role:Super Admin|Rektor|Dekan')->group(function () {
+        Route::get('/work-cascading/create/{workResult}', [WorkCascadingController::class, 'create'])
+        ->name('work-cascading.create');
+
+        Route::post('/work-cascading', [WorkCascadingController::class, 'store'])
+            ->name('work-cascadings.store');
+
     });
     
     Route::resource('/roles', RoleController::class);

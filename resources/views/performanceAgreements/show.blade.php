@@ -23,12 +23,11 @@
                         </td>
                         <td class="px-4 py-3 text-center">
                             <div class="flex items-center justify-center gap-2">
-                                <button
-                                    class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600">View</button>
-                                <button
-                                    class="px-2 py-1 text-xs bg-yellow-500 text-white rounded hover:bg-yellow-600">Edit</button>
-                                <button
-                                    class="px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600">Delete</button>
+                                {{-- <a href="{{ route('work-cascading.create', $workResult->id) }}">
+                                    <button
+                                        class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600">Cascading</button>
+                                </a> --}}
+
                             </div>
                         </td>
                     </tr>
@@ -44,12 +43,10 @@
                             </td>
                             <td class="px-4 py-3 text-center">
                                 <div class="flex items-center justify-center gap-2">
-                                    <button
-                                        class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600">View</button>
-                                    <button
-                                        class="px-2 py-1 text-xs bg-yellow-500 text-white rounded hover:bg-yellow-600">Edit</button>
-                                    <button
-                                        class="px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600">Delete</button>
+                                    <a href="{{ route('work-cascading.create', $workResult->id) }}">
+                                        <button
+                                            class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600">Cascading</button>
+                                    </a>
                                 </div>
                             </td>
                         </tr>

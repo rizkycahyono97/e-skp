@@ -42,7 +42,7 @@ class SkpSeeder extends Seeder
             }
 
             $workResultDekan = WorkResult::updateOrCreate(['skp_id' =>  $skpDekan->skp_id, 'description' =>  'Menyumbang 20 publikasi international'], [
-                'is_from_cascading' => true,
+                // 'is_from_cascading' => true,
                 'penugasan_dari' => 'Rektor'
             ]) ;
 
@@ -64,7 +64,7 @@ class SkpSeeder extends Seeder
             // ]);
 
             $workResultDosen = WorkResult::updateOrCreate(['skp_id' => $skpDosen->skp_id, 'description' => 'Menyumbang 2 publikasi international'], [
-                'is_from_cascading' => true,
+                // 'is_from_cascading' => true,
                 'penugasan_dari' => 'Dekan'
             ]);
 

@@ -29,7 +29,7 @@ class PerformanceAgreementsSeeder extends Seeder
                 [
                     'pa_id' => $pk->id,
                     'skp_id' => null,
-                    'is_from_cascading' => true,
+                    // 'is_from_cascading' => true,
                 ]
             );
 

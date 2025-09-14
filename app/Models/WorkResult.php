@@ -32,10 +32,10 @@ class WorkResult extends Model
     }
 
     // 1:M with work_cascadings
-    public function workCascadings(): HasMany
-    {
-        return $this->hasMany(WorkCascading::class, 'parent_work_result_id');
-    }
+    // public function workCascadings(): HasMany
+    // {
+    //     return $this->hasMany(WorkCascading::class, 'parent_work_result_id');
+    // }
 
     // 1:M with performance_feedback
     public function performanceFeedbacks(): HasMany

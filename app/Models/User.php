@@ -69,7 +69,7 @@ class User extends Authenticatable
     // 1:M with performance_agreements
     public function performanceAgremeents(): HasMany
     {
-        return $this->hasMany(PerformanceAgreement::class, 'user_id');
+        return $this->hasMany(PerformanceAgreement::class, 'user_id', 'id');
     }
 
     // 1:M with performance_agreements
