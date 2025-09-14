@@ -52,4 +52,9 @@ class PerformanceAgreement extends Model
     {
         return $this->hasMany(WorkResult::class, 'pa_id', 'id');
     }
+
+    public function workCascadings(): HasMany
+    {
+        return $this->hasMany(WorkCascading::class, 'child_pa_id');
+    }
 }

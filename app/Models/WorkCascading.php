@@ -21,9 +21,15 @@ class WorkCascading extends Model
         return $this->belongsTo(WorkResult::class, 'parent_work_result_id');
     }
 
-    // 1:M with skp_plans
-    public function targetPlan(): BelongsTo 
+    // 1:M with performanc_agreement
+    public function childPerformanceAgreement(): BelongsTo 
     {
-        return $this->belongsTo(SkpPlan::class, 'target_plan_id');
+        return $this->belongsTo(PerformanceAgreement::class, 'child_pa_id');
+    }
+
+    // 1:M with skp_plans
+    public function childSkpPlan(): BelongsTo
+    {
+        return $this->belongsTo(SkpPlan::class, 'child_skp_id');
     }
 }
