@@ -1,14 +1,44 @@
 <x-layouts.app>
 
+    <x-partials.breadcrumbs :items="$breadcrumbs" />
+
     {{-- Panel atas --}}
     <div class="p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
         <div class="flex items-center justify-between">
             <div>
-                <h3 class="font-semibold text-gray-800 dark:text-white">Hasil Kerja Induk:</h3>
-                <h3 class="font-semibold text-gray-800 dark:text-white">Indicators Induk:</h3>
-                <p class="text-gray-700 dark:text-gray-300">{{ $parentWorkResult->name }}</p>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Milik:
-                    {{ $parentWorkResult->performanceAgreement->user->name }}</p>
+                <dl class="space-y-4">
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Hasil Kerja Induk
+                        </dt>
+                        <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
+                            {{ $parentIndicator->workResult->description }}
+                        </dd>
+                    </div>
+
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Indikator Induk
+                        </dt>
+                        <dd class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">
+                            {{ $parentIndicator->description }}
+                        </dd>
+                    </div>
+                </dl>
+                <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">
+                            Milik:
+                            <span
+                                class="font-medium text-gray-700 dark:text-gray-300">{{ $parentIndicator->workResult->performanceAgreement->user->name }}</span>
+                        </span>
+                    </div>
+                </div>
             </div>
             <div>
                 <button type="submit" form="cascading-form"
@@ -56,9 +86,8 @@
     {{-- Form Utama & Tabel User --}}
     <form method="POST" action="{{ route('work-cascadings.store') }}">
         @csrf
-        <input type="hidden" name="work_result_id" value="{{ $parentWorkResult->id }}">
-        {{-- Hidden input ini penting untuk memberitahu PA mana yang jadi induk --}}
-        <input type="hidden" name="performance_agreement_id" value="{{ $parentWorkResult->performance_agreement_id }}">
+        <input type="hidden" name="work_result_id" value="{{ $parentIndicator->id }}">
+        <input type="hidden" name="performance_agreement_id" value="{{ $parentIndicator->performance_agreement_id }}">
 
 
         <div
@@ -66,7 +95,7 @@
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-300">
                     <tr>
-                        <th scope="col" class="p-4"><input type="checkbox" class="rounded"></th>
+                        <th scope="col" class="px-6 py-3">Check</th>
                         <th scope="col" class="px-6 py-3">Username</th>
                         <th scope="col" class="px-6 py-3">Unit</th>
                         <th scope="col" class="px-6 py-3">Posisi</th>

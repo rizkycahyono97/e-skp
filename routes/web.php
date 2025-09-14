@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('role:Super Admin|Rektor|Dekan')->group(function () {
-        Route::get('/work-cascading/create/{workResult}', [WorkCascadingController::class, 'create'])
+        Route::get('/work-cascading/create/{indicator}', [WorkCascadingController::class, 'create'])
         ->name('work-cascading.create');
 
         Route::post('/work-cascading', [WorkCascadingController::class, 'store'])
