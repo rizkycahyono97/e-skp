@@ -12,7 +12,8 @@ class Unit extends Model
     use HasRoles, HasFactory;
 
     protected $fillable = [
-        'unit_name'
+        'unit_name',
+        'parent_unit_id'
     ];
 
     // 1:M with users

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('target', length:100)->nullable();
             $table->string('perspektif')->nullable();
-            $table->boolean('is_from_cascading')->nullable();
+            $table->boolean('is_cascaded')->nullable();
             // $table->boolean('is_manual');
             $table->timestamps();
         });

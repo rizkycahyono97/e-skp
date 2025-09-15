@@ -138,13 +138,20 @@ class WorkCascadingController extends Controller
         //     'target_user' => $targetUser->name
         // ]);
 
-        $cascading = WorkCascading::create([
+        WorkCascading::create([
             'parent_indicator_id' => $parentIndicator->id,
             'child_pa_id' => $childPA->id,
             'child_skp_id' => null,
         ]);
 
-            // dd($cascading->toArray());
+        $unitName = Unit::find($targetUser->unit_id)->unit_name;
+
+        $parentIndicator->update([
+            'target' => $unitName,
+            'is_cascaded' => true,
+        ]);
+
+            // dd($parentIndicator->toArray());
 
         // notification
         // Notification::send($targetUser, new CascadingReceived($parentIndicator, Auth::user()));

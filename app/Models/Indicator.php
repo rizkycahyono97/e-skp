@@ -13,9 +13,11 @@ class Indicator extends Model
     use HasFactory, HasRoles;
 
     protected $fillable = [
+        'work_result_id',
         'description',
         'target',
-        'perspektif'
+        'perspektif',
+        'is_cascaded',
     ];
 
     // 1:M with work_result
