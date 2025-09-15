@@ -41,10 +41,7 @@
                 </div>
             </div>
             <div>
-                <button type="submit" form="cascading-form"
-                    class="px-6 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary/80">
-                    Simpan Cascading
-                </button>
+
             </div>
         </div>
     </div>
@@ -86,9 +83,8 @@
     {{-- Form Utama & Tabel User --}}
     <form method="POST" action="{{ route('work-cascadings.store') }}">
         @csrf
-        <input type="hidden" name="work_result_id" value="{{ $parentIndicator->id }}">
-        <input type="hidden" name="performance_agreement_id" value="{{ $parentIndicator->performance_agreement_id }}">
-
+        <input type="hidden" name="parent_indicator_id" value="{{ $parentIndicator->id }}">
+        {{-- <input type="hidden" name="child_pa_id" value="{{ $parentIndicator->workResult->performanceAgreement->id }}"> --}}
 
         <div
             class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md overflow-hidden">
@@ -97,22 +93,24 @@
                     <tr>
                         <th scope="col" class="px-6 py-3">Check</th>
                         <th scope="col" class="px-6 py-3">Username</th>
-                        <th scope="col" class="px-6 py-3">Unit</th>
-                        <th scope="col" class="px-6 py-3">Posisi</th>
-                        <th scope="col" class="px-6 py-3">Role</th>
+                        <th scope="col" class="px-6 py-3">Unit Kerja</th>
+                        <th scope="col" class="px-6 py-3">Jabatan</th>
+                        {{-- <th scope="col" class="px-6 py-3">Role</th> --}}
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($users as $user)
                         <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td class="w-4 p-4"><input type="checkbox" name="user_ids[]" value="{{ $user->id }}"
-                                    class="rounded"></td>
+                            <td class="w-4 p-4">
+                                <input type="checkbox" name="user_ids[]" value="{{ $user->id }}" class="rounded">
+                            </td>
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $user->username }}</th>
+                                {{ $user->username }}
+                            </th>
                             <td class="px-6 py-4">{{ optional($user->unit)->unit_name ?? '-' }}</td>
                             <td class="px-6 py-4">{{ optional($user->position)->position_name ?? '-' }}</td>
-                            <td class="px-6 py-4">{{ $user->getRoleNames()->implode(', ') }}</td>
+                            {{-- <td class="px-6 py-4">{{ $user->getRoleNames()->implode(', ') }}</td> --}}
                         </tr>
                     @empty
                         <tr>
@@ -123,6 +121,12 @@
             </table>
         </div>
 
+        <div class="mt-4">
+            <button type="submit"
+                class="px-6 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary/80">
+                Simpan Cascading
+            </button>
+        </div>
     </form>
 
     <div class="mt-4">

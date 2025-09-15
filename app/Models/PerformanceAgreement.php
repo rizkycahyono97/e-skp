@@ -14,6 +14,7 @@ class PerformanceAgreement extends Model
     use HasRoles, HasFactory;
 
     protected $fillable = [
+        'user_id',
         'approver_id',
         'category_id',
         'title',

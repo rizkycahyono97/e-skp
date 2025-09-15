@@ -12,8 +12,9 @@ class WorkCascading extends Model
     use HasFactory, HasRoles;
     
     protected $fillable = [
-        'parent_work_result_id',
-        'target_plan_id',
+        'parent_indicator_id',
+        'child_pa_id',
+        'child_skp_id'
     ];
 
     // 1:M with work_result

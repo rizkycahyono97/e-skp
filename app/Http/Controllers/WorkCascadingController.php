@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Indicator;
+use App\Models\PerformanceAgreement;
 use App\Models\Position;
-use App\Models\SkpPlan;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\WorkCascading;
 use App\Models\WorkResult;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
-class workCascadingController extends Controller
+class WorkCascadingController extends Controller
 {
-    /**
-     * form untuk membuat cascading dari work_result
-     */
     public function create(Request $request, Indicator $indicator)
     {
         $breadcrumbs = [
@@ -26,11 +26,15 @@ class workCascadingController extends Controller
 
         $parentIndicator = Indicator::with('workResult.performanceAgreement.user')->findOrFail($indicator->id);
         
+        // Authorization check
+        // if ($parentIndicator->workResult->performanceAgreement->user->id !== Auth::id()) {
+        //     abort(403, 'Anda tidak memiliki akses ke indicator ini.');
+        // }
+
         $units = Unit::all();
         $positions = Position::all();
-        // $roles = Role::all();
 
-        $query = User::with(['unit', 'position', 'roles']);
+        $query = User::with(['unit', 'position', 'roles'])->where('id', '!=', Auth::id()); 
 
         if ($request->filled('unit')) {
             $query->where('unit_id', $request->unit);
@@ -38,35 +42,111 @@ class workCascadingController extends Controller
         if ($request->filled('position')) {
             $query->where('position_id', $request->position);
         }
-        // if ($request->filled('role')) {
-        //     $query->whereHas('roles', fn($q) => $q->where('name', $request->role));
-        // }
 
         $users = $query->latest()->paginate(10)->withQueryString();
 
-        // dd($parentIndicator->toArray());
-
         return view('workCascadings.create', [
             'parentIndicator' => $parentIndicator,
-            'users'            => $users,
-            'units'            => $units,
-            'positions'        => $positions,
-            // 'roles'            => $roles,
-            'filters'          => $request->only(['unit', 'position']),
+            'users' => $users,
+            'units' => $units,
+            'positions' => $positions,
+            'filters' => $request->only(['unit', 'position']),
             'breadcrumbs' => $breadcrumbs,
         ]);
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'parent_indicator_id' => 'required|exists:indicators,id',
-            'child_skp_id' => 'nullable|integer',
-            'child_pa_id' => 'nullable|integer',
+            'user_ids' => 'required|array|min:1',
+            'user_ids.*' => 'exists:users,id',
         ]);
 
-        WorkCascading::create($validated);
+        //eager loading
+        $parentIndicator = Indicator::with(['workResult.performanceAgreement.user'])
+            ->findOrFail($request->parent_indicator_id);
 
-        return redirect()->back()->with('success', 'Cascading berhasil dibuat');
+        // auth chek
+        // if ($parentIndicator->workResult->performanceAgreement->user->id !== Auth::id()) {
+        //     abort(403, 'Anda tidak memiliki akses ke indicator ini.');
+        // }
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($request->user_ids as $userId) {
+                $this->cascadeToUser($parentIndicator, $userId); //private function helper
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->route('performance-agreements.show', $parentIndicator->workResult->performanceAgreement->id)
+                ->with('success', 'Cascading berhasil dilakukan ke ' . count($request->user_ids) . ' user.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Terjadi kesalahan saat melakukan cascading: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Cascade indicator to a specific user
+     */
+    protected function cascadeToUser(Indicator $parentIndicator, $userId)
+    {
+        $targetUser = User::findOrFail($userId);
+
+        // Check if the target user already has a PA for the same year
+        $existingPA = PerformanceAgreement::where('user_id', $targetUser->id)
+            ->where('year', $parentIndicator->workResult->performanceAgreement->year)
+            ->first();
+
+        if ($existingPA) {
+            // jika pa suda ada
+            $childPA = $existingPA;
+            
+            $existingCascading = WorkCascading::where('parent_indicator_id', $parentIndicator->id)
+                ->where('child_pa_id', $childPA->id)
+                ->exists();
+                
+            if ($existingCascading) {
+                session()->forget('success');
+                return redirect()->route('work-cascading.create', $parentIndicator->id)
+                    ->with('error', 'Indicator sudah dicascading ke user ' . $targetUser->name . ' sebelumnya.');
+            }
+        } else {
+
+            // dd($targetUser->toArray());
+            $childPA = PerformanceAgreement::create([
+                'user_id' => $targetUser->id,
+                'approver_id' => null,
+                'category_id' => null,
+                // 'title' => "Cascading dari " . Auth::user()->name . ": " . $parentIndicator->description,
+                'title' => $parentIndicator->description,
+                'year' => $parentIndicator->workResult->performanceAgreement->year,
+                'status' => 'draft',
+                'submitted_at' => null,
+                'approved_at' => null,
+            ]);
+        }
+
+        // dd([
+        //     'parent_indicator_id' => $parentIndicator->id,
+        //     'child_pa_id' => $childPA->id,
+        //     'target_user' => $targetUser->name
+        // ]);
+
+        $cascading = WorkCascading::create([
+            'parent_indicator_id' => $parentIndicator->id,
+            'child_pa_id' => $childPA->id,
+            'child_skp_id' => null,
+        ]);
+
+            // dd($cascading->toArray());
+
+        // notification
+        // Notification::send($targetUser, new CascadingReceived($parentIndicator, Auth::user()));
     }
 }

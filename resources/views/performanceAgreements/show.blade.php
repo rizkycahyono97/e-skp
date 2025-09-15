@@ -2,6 +2,14 @@
 
     <x-partials.breadcrumbs :items="$breadcrumbs" />
 
+    {{-- flash session --}}
+    @if (session('error'))
+        <x-partials.alert type="error" :message="session('error')" />
+    @elseif (session('success'))
+        <x-partials.alert type="success" :message="session('success')" />
+    @endif
+
+
     <div
         class="max-w-5xl mx-auto mt-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md overflow-hidden">
         <table class="w-full text-sm border-collapse">
@@ -36,7 +44,7 @@
                     @foreach ($workResult->indicators as $indicator)
                         <tr
                             class="border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                            <td class="px-8 py-2 border-r border-gray-200 dark:border-gray-700"> {{-- px-8 untuk indentasi --}}
+                            <td class="px-8 py-2 border-r border-gray-200 dark:border-gray-700">
                                 <span class="mr-2">-</span>
                                 {{ $indicator->description }}
                                 <span class="text-xs text-gray-500">(table indicators)</span>
