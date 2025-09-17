@@ -17,7 +17,7 @@
         </span>
     </a>
 
-    <a href="#" class="group relative flex items-center">
+    <a href="{{ route('performance-agreements.edit', $pa->id) }}" class="group relative flex items-center">
         <div class="p-2 text-blue-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg">
