@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('approver_id')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->string('title')->nullable();
+            $table->string('cascaded_from')->nullable();
             $table->year('year');
             // $table->date('duration_start');
             // $table->date('duration_end');

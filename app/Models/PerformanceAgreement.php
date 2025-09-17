@@ -18,6 +18,7 @@ class PerformanceAgreement extends Model
         'approver_id',
         'category_id',
         'title',
+        'cascaded_from',
         'year',
         'status',
         'rejection_reason',

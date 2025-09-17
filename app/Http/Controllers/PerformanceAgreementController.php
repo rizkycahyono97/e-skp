@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use App\Models\PerformanceAgreement;
+use Illuminate\Support\Facades\Auth;
 
 class PerformanceAgreementController extends Controller
 {
@@ -21,7 +22,7 @@ class PerformanceAgreementController extends Controller
             ['name' => 'Performance Agreements', 'url' => null],
         ];
 
-        $pas = PerformanceAgreement::latest()->paginate(10);
+        $pas = PerformanceAgreement::where('user_id', Auth::id())->latest()->paginate(10);
             
         return view('performanceAgreements.index', compact('header', 'breadcrumbs', 'pas'));
     }

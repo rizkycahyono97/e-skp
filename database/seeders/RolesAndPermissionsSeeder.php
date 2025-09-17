@@ -19,32 +19,16 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // define permission
         $permissions = [
-            'view dashboard',
-            'manage users',
-            'manage positions',
-            'manage units',
-            'manage master data',
-
-            // PK permission
-            'view pk',
-            'create pk',
-            'approve pk',
-            'edit pk',
-
-            // SKP permission
-            'view skp',
-            'create skp',
-            'edit skp',
-            'approve skp',
-            'submit skp',
-            'revert skp',
-
-            // cascading dan evaluation permission
-            'manage cascading',
-            'fill realization',
-            'evaluate skp',
-            'view reports',
-            'print documents',
+            'view',
+            'create',
+            'edit',
+            'submit',
+            'approve',
+            'manage',
+            'fill',
+            'revert',
+            'evaluate',
+            'print',
         ];
 
         //buat permission
@@ -54,34 +38,30 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // define role
         $roles = [
-            'Super Admin' => [
-                'view dashboard', 'view pk', 'create pk', 'approve pk', 'edit pk', 'manage cascading', 'view skp', 'view reports', 'print documents' 
+            'Admin' => [
+                'view', 'create', 'approve', 'edit', 'manage', 'print', 'submit', 'fill', 'revert', 'evaluate'
             ],
             'Rektor' => [
-                'view dashboard', 'view pk', 'create pk', 'approve pk', 'edit pk', 'manage cascading', 'view skp', 'view reports', 'print documents' 
+                'view', 'create', 'approve', 'edit', 'manage', 'print'
             ],
             'Dekan' => [
-                'view dashboard', 'view pk', 'create skp', 'edit skp', 'submit skp', 
-                'approve skp', 'manage cascading', 'view skp', 'view reports', 'print documents'
+                'view', 'create', 'edit', 'submit', 'approve', 'manage', 'print'
             ],
             'Kaprodi' => [
-                'view dashboard', 'view pk', 'create skp', 'edit skp', 'submit skp', 
-                'approve skp', 'manage cascading', 'view skp', 'view reports', 'print documents'
+                'view', 'create', 'edit', 'submit', 'approve', 'manage', 'print'
             ],
             'Dosen' => [
-                'view dashboard', 'view skp', 'create skp', 'edit skp', 'submit skp', 
-                'fill realization', 'print documents'
+                'view', 'create', 'edit', 'submit', 'fill', 'print'
             ],
             'Tendik' => [
-                'view dashboard', 'view skp', 'create skp', 'edit skp', 'submit skp', 
-                'fill realization', 'print documents'
+                'view', 'create', 'edit', 'submit', 'fill', 'print'
             ],
             'Pejabat Penilai' => [
-                'view dashboard', 'view skp', 'approve skp', 'revert skp', 'evaluate skp', 
-                'view reports', 'print documents'
+                'view', 'approve', 'revert', 'evaluate', 'print'
             ],
-            'Admin' => array_column(Permission::all()->toArray(), 'name'),
+            'Super Admin' => array_column(Permission::all()->toArray(), 'name'), // full akses untuk admin
         ];
+
 
         // buat permission dan assign role ke permission
         foreach ($roles as $roleName => $permissionNames) {

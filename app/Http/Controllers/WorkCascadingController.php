@@ -125,6 +125,7 @@ class WorkCascadingController extends Controller
                 'category_id' => null,
                 // 'title' => "Cascading dari " . Auth::user()->name . ": " . $parentIndicator->description,
                 'title' => $parentIndicator->description,
+                'cascaded_from' => Auth::user()->unit->unit_name,
                 'year' => $parentIndicator->workResult->performanceAgreement->year,
                 'status' => 'draft',
                 'submitted_at' => null,
