@@ -325,17 +325,6 @@
                     alert('Fitur menambah indicator akan diimplementasi dengan AJAX');
                 },
 
-                addNewIndicatorToNewWorkResult(wrIndex) {
-                    this.newWorkResults[wrIndex].new_indicators.push({
-                        description: '',
-                        target: '',
-                        perspektif: ''
-                    });
-                },
-                removeNewIndicatorFromNewWorkResult(wrIndex, indIndex) {
-                    this.newWorkResults[wrIndex].new_indicators.splice(indIndex, 1);
-                }
-
                 submitForm() {
                     document.getElementById('workResultForm').submit();
                 }
