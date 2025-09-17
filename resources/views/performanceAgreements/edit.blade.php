@@ -189,69 +189,75 @@
                 @endforeach
 
                 <!-- Add New Work Result -->
-                <div x-data="{ expanded: false }" class="mb-6">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden border border-dashed border-blue-300">
-                        <button type="button" @click="expanded = !expanded"
-                            class="w-full px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-blue-700">Tambah Work Result Baru</h3>
-                            <svg x-show="!expanded" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                            <svg x-show="expanded" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 15l7-7 7 7" />
-                            </svg>
-                        </button>
+                <fieldset class="mt-6">
+                    <legend class="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Tambah Work Result Baru
+                    </legend>
 
-                        <div x-show="expanded" x-collapse class="px-6 py-4 space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Work
-                                    Result</label>
-                                <textarea name="new_work_result[description]"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                    rows="3" placeholder="Masukkan deskripsi work result"></textarea>
-                            </div>
+                    <div class="space-y-6">
+                        {{-- Perulangan untuk setiap work result baru yang ditambahkan --}}
+                        <template x-for="(newWr, index) in newWorkResults" :key="index">
+                            <div
+                                class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-dashed border-blue-300 dark:border-blue-500 p-6">
 
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Penugasan Dari</label>
-                                <input type="text" name="new_work_result[penugasan_dari]"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                    placeholder="Masukkan penugasan dari">
-                            </div>
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="font-semibold text-gray-800 dark:text-white">Work Result Baru #<span
+                                            x-text="index + 1"></span></h3>
+                                    <button type="button" @click="removeNewWorkResult(index)"
+                                        class="text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 text-sm">
+                                        Hapus
+                                    </button>
+                                </div>
 
-                            <div class="bg-blue-50 p-4 rounded-md border border-blue-200">
-                                <h4 class="text-md font-semibold text-gray-700 mb-3">Indicator Baru</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-4">
+                                    {{-- Deskripsi Work Result Baru --}}
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi
-                                            Indicator</label>
-                                        <textarea name="new_work_result[new_indicator][description]"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                            rows="2" placeholder="Masukkan deskripsi indicator"></textarea>
+                                        <label :for="`new_wr_desc_${index}`"
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Deskripsi
+                                            Work Result</label>
+                                        <textarea :name="`new_work_results[${index}][description]`" :id="`new_wr_desc_${index}`"
+                                            class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
+                                            rows="3" placeholder="Masukkan deskripsi work result"></textarea>
                                     </div>
-                                    <div class="space-y-3">
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Target</label>
-                                            <input type="text" name="new_work_result[new_indicator][target]"
-                                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                                placeholder="Masukkan target">
-                                        </div>
-                                        <div>
-                                            <label
-                                                class="block text-sm font-medium text-gray-700 mb-1">Perspektif</label>
-                                            <input type="text" name="new_work_result[new_indicator][perspektif]"
-                                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                                placeholder="Masukkan perspektif">
-                                        </div>
+
+                                    {{-- Penugasan Dari Work Result Baru --}}
+                                    <div>
+                                        <label :for="`new_wr_penugasan_${index}`"
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Penugasan
+                                            Dari</label>
+                                        <input type="text" :name="`new_work_results[${index}][penugasan_dari]`"
+                                            :id="`new_wr_penugasan_${index}`"
+                                            class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
+                                            placeholder="Masukkan penugasan dari">
+                                    </div>
+
+                                    {{-- Indikator untuk Work Result Baru --}}
+                                    <div
+                                        class="bg-blue-50 dark:bg-gray-700/50 p-4 rounded-md border border-blue-200 dark:border-gray-600">
+                                        <h4 class="text-md font-semibold text-gray-700 dark:text-white mb-3">Indicator
+                                            Baru</h4>
+                                        {{-- ... form input untuk new_indicator dengan nama yang diindeks ... --}}
+                                        <textarea :name="`new_work_results[${index}][new_indicator][description]`" class="w-full ..."
+                                            placeholder="Deskripsi indicator"></textarea>
+                                        <input type="text"
+                                            :name="`new_work_results[${index}][new_indicator][target]`"
+                                            class="w-full mt-2 ..." placeholder="Target">
+                                        <input type="text"
+                                            :name="`new_work_results[${index}][new_indicator][perspektif]`"
+                                            class="w-full mt-2 ..." placeholder="Perspektif">
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </template>
                     </div>
-                </div>
+
+                    {{-- Tombol untuk memicu penambahan work result baru --}}
+                    <div class="mt-6">
+                        <button type="button" @click="addNewWorkResult()"
+                            class="w-full border border-dashed border-primary dark:border-blue-400 text-primary dark:text-blue-400 py-2 rounded-lg hover:bg-primary/5 dark:hover:bg-blue-400/10">
+                            + Tambah Hasil Kerja
+                        </button>
+                    </div>
+                </fieldset>
 
                 <!-- Form Actions -->
                 <div class="flex justify-end space-x-3 mt-8 pt-6 border-t border-gray-200">
@@ -272,18 +278,18 @@
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('workResultEditor', () => ({
+                // State untuk accordion (membuka/menutup section)
                 openSections: [],
 
+                // State untuk menampung work result BARU yang ditambahkan
+                newWorkResults: [],
+
+                // Method untuk inisialisasi (opsional, bisa dihapus jika tidak ada init khusus)
                 init() {
-                    // Buka semua section saat pertama kali load
-                    this.$nextTick(() => {
-                        document.querySelectorAll('[x-data^="workResult"]').forEach((_,
-                            index) => {
-                            this.openSections.push(index);
-                        });
-                    });
+                    // Logika inisialisasi jika ada
                 },
 
+                // Method untuk accordion
                 toggleSection(index) {
                     if (this.isOpen(index)) {
                         this.openSections = this.openSections.filter(i => i !== index);
@@ -296,21 +302,41 @@
                     return this.openSections.includes(index);
                 },
 
-                addNewIndicator(workResultId) {
-                    const newIndicator = {
+                // ---- METHOD BARU DIPINDAHKAN KE SINI ----
+                addNewWorkResult() {
+                    this.newWorkResults.push({
                         description: '',
-                        target: '',
-                        perspektif: ''
-                    };
+                        penugasan_dari: '',
+                        new_indicator: {
+                            description: '',
+                            target: '',
+                            perspektif: ''
+                        },
+                    });
+                },
 
-                    // Dalam implementasi real, ini akan menambah data ke server
-                    console.log('Adding new indicator to work result:', workResultId, newIndicator);
+                removeNewWorkResult(index) {
+                    this.newWorkResults.splice(index, 1);
+                },
+
+                // Method lain yang sudah ada
+                addNewIndicator(workResultId) {
+                    console.log('Adding new indicator to work result:', workResultId);
                     alert('Fitur menambah indicator akan diimplementasi dengan AJAX');
                 },
 
+                addNewIndicatorToNewWorkResult(wrIndex) {
+                    this.newWorkResults[wrIndex].new_indicators.push({
+                        description: '',
+                        target: '',
+                        perspektif: ''
+                    });
+                },
+                removeNewIndicatorFromNewWorkResult(wrIndex, indIndex) {
+                    this.newWorkResults[wrIndex].new_indicators.splice(indIndex, 1);
+                }
+
                 submitForm() {
-                    console.log('Form submitted');
-                    // Diimplementasi dengan form submit biasa
                     document.getElementById('workResultForm').submit();
                 }
             }));

@@ -201,22 +201,28 @@ class PerformanceAgreementController extends Controller
             }
 
             // 3. Add new work result jika ada
-            if (!empty($request->new_work_result['description'])) {
-                $newWorkResult = WorkResult::create([
-                    'pa_id' => $performanceAgreement->id,
-                    'description' => $request->new_work_result['description'],
-                    'penugasan_dari' => $request->new_work_result['penugasan_dari'] ?? null,
-                ]);
+            // 3. Add new work results jika ada
+            if ($request->has('new_work_results')) {
+                foreach ($request->new_work_results as $newWorkResultData) {
+                    // Lakukan create hanya jika deskripsi diisi
+                    if (!empty($newWorkResultData['description'])) {
+                        $newWorkResult = WorkResult::create([
+                            'pa_id' => $performanceAgreement->id,
+                            'description' => $newWorkResultData['description'],
+                            'penugasan_dari' => $newWorkResultData['penugasan_dari'] ?? null,
+                        ]);
 
-                // Add indicator untuk work result baru jika ada
-                if (!empty($request->new_work_result['new_indicator']['description'])) {
-                    Indicator::create([
-                        'work_result_id' => $newWorkResult->id,
-                        'description' => $request->new_work_result['new_indicator']['description'],
-                        'target' => $request->new_work_result['new_indicator']['target'] ?? null,
-                        'perspektif' => $request->new_work_result['new_indicator']['perspektif'] ?? null,
-                        'is_from_cascading' => false,
-                    ]);
+                        // Tambahkan indikator untuk work result baru ini
+                        if (!empty($newWorkResultData['new_indicator']['description'])) {
+                            Indicator::create([
+                                'work_result_id' => $newWorkResult->id,
+                                'description' => $newWorkResultData['new_indicator']['description'],
+                                'target' => $newWorkResultData['new_indicator']['target'] ?? null,
+                                'perspektif' => $newWorkResultData['new_indicator']['perspektif'] ?? null,
+                                'is_from_cascading' => false,
+                            ]);
+                        }
+                    }
                 }
             }
 

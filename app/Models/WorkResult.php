@@ -13,7 +13,8 @@ class WorkResult extends Model
     use HasFactory, HasRoles;
 
     protected $fillable = [
-        'work_result_id',
+        'skp_id',
+        'pa_id',
         'description',
         'penugasan_dari',
         'is_from_cascading'
