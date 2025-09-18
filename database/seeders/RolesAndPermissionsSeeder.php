@@ -19,8 +19,8 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // define permission
         $permissions = [
-            'view',
-            'create',
+            'show',
+            'buat',
             'edit',
             'submit',
             'approve',
@@ -39,25 +39,25 @@ class RolesAndPermissionsSeeder extends Seeder
         // define role
         $roles = [
             'Admin' => [
-                'view', 'create', 'approve', 'edit', 'manage', 'print', 'submit', 'fill', 'revert', 'evaluate'
+                'show', 'buat', 'approve', 'edit', 'manage', 'print', 'submit', 'fill', 'revert', 'evaluate'
             ],
             'Rektor' => [
-                'view', 'create', 'approve', 'edit', 'manage', 'print'
+                'show', 'buat', 'approve', 'edit', 'manage', 'print'
             ],
             'Dekan' => [
-                'view', 'create', 'edit', 'submit', 'approve', 'manage', 'print'
+                'show', 'buat', 'edit', 'submit', 'approve', 'manage', 'print'
             ],
             'Kaprodi' => [
-                'view', 'create', 'edit', 'submit', 'approve', 'manage', 'print'
+                'show', 'buat', 'edit', 'submit', 'approve', 'manage', 'print'
             ],
             'Dosen' => [
-                'view', 'create', 'edit', 'submit', 'fill', 'print'
+                'show', 'buat', 'edit', 'submit', 'fill', 'print'
             ],
             'Tendik' => [
-                'view', 'create', 'edit', 'submit', 'fill', 'print'
+                'show', 'buat', 'edit', 'submit', 'fill', 'print'
             ],
             'Pejabat Penilai' => [
-                'view', 'approve', 'revert', 'evaluate', 'print'
+                'show', 'approve', 'revert', 'evaluate', 'print'
             ],
             'Super Admin' => array_column(Permission::all()->toArray(), 'name'), // full akses untuk admin
         ];

@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use App\Models\PerformanceAgreement;
 use App\Models\WorkResult;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class PerformanceAgreementController extends Controller
@@ -31,8 +32,9 @@ class PerformanceAgreementController extends Controller
         return view('performanceAgreements.index', compact('header', 'breadcrumbs', 'pas'));
     }
 
-    public function show($id): View
+    public function show(PerformanceAgreement $performanceAgreement): View
     {
+        Gate::authorize('view', $performanceAgreement);
 
         $breadcrumbs = [
             ['name' => 'Dashboard', 'url' => route('dashboard')],
@@ -40,15 +42,16 @@ class PerformanceAgreementController extends Controller
             ['name' => 'Show PK', 'url' => null]
         ];
 
-        $pa = PerformanceAgreement::with('workResults.indicators')
-            ->where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
+        // $pa = PerformanceAgreement::with('workResults.indicators')
+        //     ->where('id', $id)
+        //     // ->where('user_id', Auth::id())
+        //     ->firstOrFail();
 
+        $performanceAgreement->load('workResults.indicators');
 
         // dd($pa->toArray());
 
-        return view('performanceAgreements.show', compact('pa', 'breadcrumbs'));
+        return view('performanceAgreements.show', compact('performanceAgreement', 'breadcrumbs'));
     }
 
     public function create()
@@ -99,9 +102,7 @@ class PerformanceAgreementController extends Controller
 
     public function edit(PerformanceAgreement $performanceAgreement)
     {
-        // if ($performanceAgreement->status !== 'draft') {
-        //     return redirect()->route('performance-agreements.index')->with('error', 'hanya bisa mengedit hasil kerja pada status draft');
-        // }
+        Gate::authorize('update', $performanceAgreement);
 
         $breadcrumbs = [
             ['name' => 'Dashboard', 'url' => route('dashboard')],

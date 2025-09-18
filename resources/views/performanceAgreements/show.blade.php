@@ -20,7 +20,7 @@
                 </tr>
             </thead>
             <tbody class="text-gray-700 dark:text-gray-300">
-                @forelse ($pa->workResults as $workResult)
+                @forelse ($performanceAgreement->workResults as $workResult)
 
                     {{-- Work Result --}}
                     <tr class="border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
