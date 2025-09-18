@@ -92,7 +92,7 @@ class WorkCascadingController extends Controller
     }
 
     /**
-     * Cascade indicator to a specific user
+     * helper cascade indicator to a specific user
      */
     protected function cascadeToUser(Indicator $parentIndicator, $userId)
     {
@@ -121,7 +121,7 @@ class WorkCascadingController extends Controller
             // dd($targetUser->toArray());
             $childPA = PerformanceAgreement::create([
                 'user_id' => $targetUser->id,
-                'approver_id' => null,
+                'approver_id' => Auth::user()->id,
                 'category_id' => null,
                 // 'title' => "Cascading dari " . Auth::user()->name . ": " . $parentIndicator->description,
                 'title' => $parentIndicator->description,

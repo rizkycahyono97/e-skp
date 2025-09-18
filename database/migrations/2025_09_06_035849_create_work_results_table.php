@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('work_results', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('skp_id')->nullable()->constrained('skp_plans')->onDelete('set null');
-            $table->foreignId('pa_id')->nullable()->constrained('performance_agreements')->onDelete('set null');
+            $table->foreignId('skp_id')->nullable()->constrained('skp_plans')->cascadeOnDelete();
+            $table->foreignId('pa_id')->nullable()->constrained('performance_agreements')->cascadeOnDelete();
             $table->text('description');
             $table->string('penugasan_dari')->nullable();
             // $table->boolean('is_from_cascading')->nullable();
