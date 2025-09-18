@@ -182,23 +182,29 @@ class PerformanceAgreementController extends Controller
 
             // 2. Handle new indicators untuk existing work results
             if ($request->has('new_indicators')) {
-                foreach ($request->new_indicators as $workResultId => $newIndicatorData) {
-                    // Pastikan work result exists dan milik PA ini
+                // $newIndicatorsGrouped adalah array [ workResultId => [ indicator1, indicator2, ... ] ]
+                foreach ($request->new_indicators as $workResultId => $newIndicatorsGrouped) {
                     $workResult = WorkResult::where('id', $workResultId)
                         ->where('pa_id', $performanceAgreement->id)
                         ->first();
-                    
-                    if ($workResult && !empty($newIndicatorData['description'])) {
-                        Indicator::create([
-                            'work_result_id' => $workResult->id,
-                            'description' => $newIndicatorData['description'],
-                            'target' => $newIndicatorData['target'] ?? null,
-                            'perspektif' => $newIndicatorData['perspektif'] ?? null,
-                            'is_from_cascading' => false,
-                        ]);
+
+                    if ($workResult) {
+                        // Lakukan perulangan untuk setiap indikator baru dalam grup ini
+                        foreach ($newIndicatorsGrouped as $newIndicatorData) {
+                            if (!empty($newIndicatorData['description'])) {
+                                Indicator::create([
+                                    'work_result_id' => $workResult->id,
+                                    'description' => $newIndicatorData['description'],
+                                    'target' => $newIndicatorData['target'] ?? null,
+                                    'perspektif' => $newIndicatorData['perspektif'] ?? null,
+                                    'is_from_cascading' => false,
+                                ]);
+                            }
+                        }
                     }
                 }
             }
+
 
             // 3. Add new work result jika ada
             // 3. Add new work results jika ada

@@ -58,7 +58,7 @@
             @endif
 
             <form method="POST" action="{{ route('performance-agreements.update', $performanceAgreement->id) }}"
-                id="workResultForm">
+                id="workResultForm" x-data="workResultEditor()">
                 @csrf
                 @method('PUT')
 
@@ -80,21 +80,16 @@
 
                 <!-- Existing Work Results -->
                 @foreach ($performanceAgreement->workResults as $workResultIndex => $workResult)
-                    <div x-data="{ isEditing: false }" class="mb-6">
+                    <div class="mb-6">
                         <div
-                            class="bg-white  rounded-lg shadow-md overflow-hidden border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                            <div
+                            class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                            <div @click="toggleSection({{ $workResultIndex }})"
                                 class="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 flex justify-between items-center dark:from-gray-700 dark:to-gray-800 dark:border-gray-700">
-
-                                {{-- Teks judul diberi warna terang untuk mode gelap --}}
                                 <h3 class="text-lg font-semibold text-gray-800 dark:text-white">
-                                    Work Result #{{ $loop->iteration }}
+                                    Hasil Kerja {{ $loop->iteration }}
                                 </h3>
-
-                                {{-- Tombol (dan ikon di dalamnya) diberi warna terang untuk mode gelap --}}
-                                <button type="button" @click="toggleSection({{ $workResultIndex }})"
+                                <button type="button"
                                     class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
-
                                     <svg x-show="!isOpen({{ $workResultIndex }})" class="h-5 w-5" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -109,7 +104,6 @@
                             </div>
 
                             <div x-show="isOpen({{ $workResultIndex }})" x-collapse class="px-6 py-4 space-y-4">
-                                <!-- Work Result Description -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         Deskripsi Work Result
@@ -118,17 +112,16 @@
                                         class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                         rows="2" required>{{ $workResult->description }}</textarea>
                                 </div>
-                                <!-- Penugasan Dari -->
                                 <div>
                                     <label
                                         class="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">Penugasan
                                         Dari</label>
                                     <input type="text" name="work_results[{{ $workResult->id }}][penugasan_dari]"
                                         value="{{ $workResult->penugasan_dari }}"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 ark:border-gray-600">
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600">
                                 </div>
 
-                                <!-- Existing Indicators -->
+                                <!-- Indicators Section -->
                                 <div>
                                     <div class="flex justify-between items-center mb-3">
                                         <h4 class="text-md font-semibold text-gray-700 dark:text-gray-300">Indicators
@@ -144,6 +137,7 @@
                                         </button>
                                     </div>
 
+                                    {{-- Loop untuk Indikator yang SUDAH ADA --}}
                                     @foreach ($workResult->indicators as $indicator)
                                         <div
                                             class="bg-gray-50 p-4 rounded-md mb-3 border border-gray-200 dark:bg-gray-700/50 dark:border-gray-600">
@@ -158,7 +152,7 @@
                                                         rows="2" required>{{ $indicator->description }}</textarea>
                                                 </div>
                                                 <div class="space-y-3">
-                                                    <div>
+                                                    {{-- <div>
                                                         <label
                                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                                             Target
@@ -167,7 +161,7 @@
                                                             name="work_results[{{ $workResult->id }}][indicators][{{ $indicator->id }}][target]"
                                                             value="{{ $indicator->target }}"
                                                             class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-500 text-gray-900 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                                    </div>
+                                                    </div> --}}
                                                     <div>
                                                         <label
                                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -182,13 +176,66 @@
                                             </div>
                                         </div>
                                     @endforeach
+
+                                    {{-- ✨ BARU: Loop untuk Indikator BARU yang ditambahkan via Alpine.js ✨ --}}
+                                    <div class="mt-4 space-y-3">
+                                        <template
+                                            x-for="(newIndicator, index) in newIndicators[{{ $workResult->id }}] || []"
+                                            :key="index">
+                                            <div
+                                                class="bg-green-50 dark:bg-green-900/30 p-4 rounded-md border border-dashed border-green-400 dark:border-green-600 relative animate-fade-in">
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label
+                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Deskripsi
+                                                            Indicator Baru</label>
+                                                        {{-- Nama (name) dibuat dinamis agar diterima Laravel sebagai array --}}
+                                                        <textarea :name="`new_indicators[{{ $workResult->id }}][${index}][description]`" x-model="newIndicator.description"
+                                                            class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-500 text-gray-900 dark:text-white rounded-md shadow-sm"
+                                                            rows="2" placeholder="Deskripsi Indikator Baru" required></textarea>
+                                                    </div>
+                                                    <div class="space-y-3">
+                                                        <div>
+                                                            <label
+                                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Target</label>
+                                                            <input type="text"
+                                                                :name="`new_indicators[{{ $workResult->id }}][${index}][target]`"
+                                                                x-model="newIndicator.target"
+                                                                class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-500 text-gray-900 dark:text-white rounded-md shadow-sm"
+                                                                placeholder="Target Indikator Baru">
+                                                        </div>
+                                                        <div>
+                                                            <label
+                                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Perspektif</label>
+                                                            <input type="text"
+                                                                :name="`new_indicators[{{ $workResult->id }}][${index}][perspektif]`"
+                                                                x-model="newIndicator.perspektif"
+                                                                class="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-500 text-gray-900 dark:text-white rounded-md shadow-sm"
+                                                                placeholder="Perspektif Indikator Baru">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {{-- Tombol untuk menghapus indikator baru --}}
+                                                <button type="button"
+                                                    @click="removeNewIndicator({{ $workResult->id }}, index)"
+                                                    class="absolute top-2 right-2 text-red-500 hover:text-red-700 dark:hover:text-red-400">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </template>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
 
-                <!-- Add New Work Result -->
+                {{-- Bagian Tambah Work Result Baru (Tidak ada perubahan) --}}
                 <fieldset class="mt-6">
                     <legend class="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Tambah Work Result Baru
                     </legend>
@@ -235,7 +282,6 @@
                                         class="bg-blue-50 dark:bg-gray-700/50 p-4 rounded-md border border-blue-200 dark:border-gray-600">
                                         <h4 class="text-md font-semibold text-gray-700 dark:text-white mb-3">Indicator
                                             Baru</h4>
-                                        {{-- ... form input untuk new_indicator dengan nama yang diindeks ... --}}
                                         <textarea :name="`new_work_results[${index}][new_indicator][description]`" class="w-full ..."
                                             placeholder="Deskripsi indicator"></textarea>
                                         <input type="text"
@@ -278,18 +324,10 @@
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('workResultEditor', () => ({
-                // State untuk accordion (membuka/menutup section)
                 openSections: [],
-
-                // State untuk menampung work result BARU yang ditambahkan
                 newWorkResults: [],
+                newIndicators: {},
 
-                // Method untuk inisialisasi (opsional, bisa dihapus jika tidak ada init khusus)
-                init() {
-                    // Logika inisialisasi jika ada
-                },
-
-                // Method untuk accordion
                 toggleSection(index) {
                     if (this.isOpen(index)) {
                         this.openSections = this.openSections.filter(i => i !== index);
@@ -302,7 +340,6 @@
                     return this.openSections.includes(index);
                 },
 
-                // ---- METHOD BARU DIPINDAHKAN KE SINI ----
                 addNewWorkResult() {
                     this.newWorkResults.push({
                         description: '',
@@ -319,10 +356,22 @@
                     this.newWorkResults.splice(index, 1);
                 },
 
-                // Method lain yang sudah ada
                 addNewIndicator(workResultId) {
-                    console.log('Adding new indicator to work result:', workResultId);
-                    alert('Fitur menambah indicator akan diimplementasi dengan AJAX');
+                    if (!this.newIndicators[workResultId]) {
+                        this.newIndicators[workResultId] = [];
+                    }
+
+                    this.newIndicators[workResultId].push({
+                        description: '',
+                        target: '',
+                        perspektif: ''
+                    });
+                },
+
+                removeNewIndicator(workResultId, index) {
+                    if (this.newIndicators[workResultId] && this.newIndicators[workResultId][index]) {
+                        this.newIndicators[workResultId].splice(index, 1);
+                    }
                 },
 
                 submitForm() {
