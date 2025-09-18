@@ -28,7 +28,7 @@
         </div>
         <span
             class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-            Edit Perjanjian Kerja
+            Edit atau Buat Perjanjian Kerja
         </span>
     </a>
 
