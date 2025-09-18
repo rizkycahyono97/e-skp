@@ -115,7 +115,7 @@ class PerformanceAgreementController extends Controller
     public function update(Request $request, PerformanceAgreement $performanceAgreement)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'sometimes|required|string|max:255',
             'work_results' => ['nullable', 'array'],
             'work_results.*.description' => ['required', 'string'],
             'work_results.*.penugasan_dari' => ['nullable', 'string'],
@@ -134,6 +134,15 @@ class PerformanceAgreementController extends Controller
             'new_work_result.new_indicator.description' => ['required_with:new_work_result.new_indicator.target,new_work_result.new_indicator.perspektif', 'nullable', 'string'],
             'new_work_result.new_indicator.target' => ['nullable', 'string'],
             'new_work_result.new_indicator.perspektif' => ['nullable', 'string'],
+
+            'new_work_results' => ['nullable', 'array'],
+            'new_work_results.*.description' => ['required', 'string'],
+            'new_work_results.*.penugasan_dari' => ['nullable', 'string'],
+            
+            'new_work_results.*.new_indicators' => ['required', 'array', 'min:1'],
+            'new_work_results.*.new_indicators.*.description' => ['required', 'string'],
+            'new_work_results.*.new_indicators.*.target' => ['nullable', 'string'],
+            'new_work_results.*.new_indicators.*.perspektif' => ['nullable', 'string'],
         ]);
 
         // if ($performanceAgreement->status !== 'draft') {
@@ -144,24 +153,26 @@ class PerformanceAgreementController extends Controller
 
         try {
             
-            $performanceAgreement->update([
+            // untuk validasi title jika cascade
+            $updatePa = [
                 'title' => $request->title,
-            ]);
+            ];
+            if ($performanceAgreement->cascaded_from) {
+                unset($updatePa['title']);
+            }
+            $performanceAgreement->update($updatePa);
 
             // 1. Update existing work results dan indicators
             if ($request->has('work_results')) {
                 foreach ($request->work_results as $workResultId => $workResultData) {
                     $workResult = WorkResult::find($workResultId);
                     
-                    // Pastikan work result milik PA ini
                     if ($workResult && $workResult->pa_id === $performanceAgreement->id) {
-                        // Update work result
                         $workResult->update([
                             'description' => $workResultData['description'] ?? $workResult->description,
                             'penugasan_dari' => $workResultData['penugasan_dari'] ?? $workResult->penugasan_dari,
                         ]);
                         
-                        // Update existing indicators
                         if (isset($workResultData['indicators'])) {
                             foreach ($workResultData['indicators'] as $indicatorId => $indicatorData) {
                                 $indicator = Indicator::find($indicatorId);
@@ -180,16 +191,13 @@ class PerformanceAgreementController extends Controller
                 }
             }
 
-            // 2. Handle new indicators untuk existing work results
             if ($request->has('new_indicators')) {
-                // $newIndicatorsGrouped adalah array [ workResultId => [ indicator1, indicator2, ... ] ]
                 foreach ($request->new_indicators as $workResultId => $newIndicatorsGrouped) {
                     $workResult = WorkResult::where('id', $workResultId)
                         ->where('pa_id', $performanceAgreement->id)
                         ->first();
 
                     if ($workResult) {
-                        // Lakukan perulangan untuk setiap indikator baru dalam grup ini
                         foreach ($newIndicatorsGrouped as $newIndicatorData) {
                             if (!empty($newIndicatorData['description'])) {
                                 Indicator::create([
@@ -206,11 +214,8 @@ class PerformanceAgreementController extends Controller
             }
 
 
-            // 3. Add new work result jika ada
-            // 3. Add new work results jika ada
             if ($request->has('new_work_results')) {
                 foreach ($request->new_work_results as $newWorkResultData) {
-                    // Lakukan create hanya jika deskripsi diisi
                     if (!empty($newWorkResultData['description'])) {
                         $newWorkResult = WorkResult::create([
                             'pa_id' => $performanceAgreement->id,
@@ -218,19 +223,23 @@ class PerformanceAgreementController extends Controller
                             'penugasan_dari' => $newWorkResultData['penugasan_dari'] ?? null,
                         ]);
 
-                        // Tambahkan indikator untuk work result baru ini
-                        if (!empty($newWorkResultData['new_indicator']['description'])) {
-                            Indicator::create([
-                                'work_result_id' => $newWorkResult->id,
-                                'description' => $newWorkResultData['new_indicator']['description'],
-                                'target' => $newWorkResultData['new_indicator']['target'] ?? null,
-                                'perspektif' => $newWorkResultData['new_indicator']['perspektif'] ?? null,
-                                'is_from_cascading' => false,
-                            ]);
+                        if (isset($newWorkResultData['new_indicators']) && is_array($newWorkResultData['new_indicators'])) {
+                            foreach ($newWorkResultData['new_indicators'] as $newIndicatorData) {
+                                if (!empty($newIndicatorData['description'])) {
+                                    Indicator::create([
+                                        'work_result_id' => $newWorkResult->id,
+                                        'description' => $newIndicatorData['description'],
+                                        'target' => $newIndicatorData['target'] ?? null,
+                                        'perspektif' => $newIndicatorData['perspektif'] ?? null,
+                                        'is_from_cascading' => false,
+                                    ]);
+                                }
+                            }
                         }
                     }
                 }
             }
+    
 
             DB::commit();
 
