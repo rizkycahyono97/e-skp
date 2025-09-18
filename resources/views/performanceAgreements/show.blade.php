@@ -9,7 +9,72 @@
         <x-partials.alert type="success" :message="session('success')" />
     @endif
 
+    @if ($performanceAgreement->status === 'reverted')
+        <div
+            class="max-w-5xl mx-auto mt-6 p-4 border-l-4 border-yellow-500 bg-yellow-100 dark:bg-yellow-800/30 text-yellow-800 dark:text-yellow-300 rounded-r-lg">
+            <h4 class="font-bold">Dikembalikan untuk Revisi</h4>
+            <p class="mt-1 text-sm">Atasan Anda memberikan catatan berikut. Silakan edit perjanjian ini dan ajukan
+                kembali.</p>
+            <blockquote class="mt-2 pl-3 border-l-2 border-yellow-600 italic text-sm">
+                "{{ $performanceAgreement->rejection_reason }}"
+            </blockquote>
+        </div>
+    @endif
+    @if ($performanceAgreement->status === 'submitted')
+        <div
+            class="max-w-5xl mx-auto mt-6 p-4 border-l-4 border-blue-500 bg-blue-100 dark:bg-blue-800/30 text-blue-800 dark:text-blue-300 rounded-r-lg">
+            <h4 class="font-bold">Menunggu Persetujuan</h4>
+            <p class="mt-1 text-sm">
+                Telah diajukan pada
+                {{ $performanceAgreement->submitted_at ? $performanceAgreement->submitted_at->format('Y-m-d') : '-' }}
+                dan sedang menunggu persetujuan dari atasan.
+            </p>
+        </div>
+    @endif
+    @if ($performanceAgreement->status === 'approved')
+        <div
+            class="max-w-5xl mx-auto mt-6 p-4 border-l-4 border-green-500 bg-green-100 dark:bg-green-800/30 text-green-800 dark:text-green-300 rounded-r-lg">
+            <h4 class="font-bold">Perjanjian Kerja Telah Disetujui</h4>
+            <p class="mt-1 text-sm">Telah disetujui pada
+                {{ $performanceAgreement->approved_at ? $performanceAgreement->approved_at->format('Y-m-d') : 'null' }}
+                dan
+                tidak dapat diubah lagi.</p>
+        </div>
+    @endif
 
+    {{-- button pengajuan pa --}}
+    <div class="max-w-5xl mx-auto mt-6 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Detail Perjanjian Kinerja</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Tahun: {{ $performanceAgreement->year }}</p>
+        </div>
+        <div class="flex items-center space-x-3">
+            {{-- Tombol-tombol ini hanya muncul jika PA masih bisa diedit/diajukan --}}
+            @if (in_array($performanceAgreement->status, ['draft', 'reverted']))
+                <a href="{{ route('performance-agreements.edit', $performanceAgreement->id) }}"
+                    class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
+                    Edit
+                </a>
+
+                {{-- Tombol "Ajukan" berada di dalam formnya sendiri untuk memicu aksi 'submit' --}}
+                <form method="POST" action="{{ route('performance-agreements.submit', $performanceAgreement->id) }}"
+                    onsubmit="return confirm('Apakah Anda yakin ingin mengajukan Perjanjian Kinerja ini untuk persetujuan?');">
+                    @csrf
+                    <button type="submit"
+                        class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        Minta Persetujuan
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('performance-agreements.index') }}"
+                    class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
+                    Kembali ke Daftar
+                </a>
+            @endif
+        </div>
+    </div>
+
+    {{-- table utama --}}
     <div
         class="max-w-5xl mx-auto mt-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md overflow-hidden">
         <table class="w-full text-sm border-collapse">

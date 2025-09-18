@@ -13,6 +13,11 @@ class PerformanceAgreement extends Model
 {
     use HasRoles, HasFactory;
 
+    protected $casts = [
+        'submitted_at' => 'date',
+        'approved_at' => 'date',
+    ];
+
     protected $fillable = [
         'user_id',
         'approver_id',

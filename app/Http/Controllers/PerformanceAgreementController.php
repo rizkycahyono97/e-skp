@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use App\Models\PerformanceAgreement;
 use App\Models\WorkResult;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
@@ -259,5 +260,65 @@ class PerformanceAgreementController extends Controller
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
                 ->withInput();
         }
+    }
+
+    public function approvalList(): View
+    {
+        $approval = PerformanceAgreement::where('approver_id', Auth::id())
+            ->where('status', 'submitted')
+            ->with('user')
+            ->latest('submitted_at')
+            ->paginate(10);
+
+        return view('performance-agreements.list-approvals', compact('approval'));
+    }
+
+    public function approvalShow(PerformanceAgreement $performanceAgreement): View
+    {
+        // Gate::authorize('approve', $performanceAgreement);
+
+        $performanceAgreement->load('user', 'workResults.indicators');
+
+        return view('performance-agreements.show-approvals', compact('performanceAgreement'));
+    }
+
+    public function submit(PerformanceAgreement $performanceAgreement): RedirectResponse
+    {
+        Gate::authorize('submit', $performanceAgreement);
+
+        $performanceAgreement->update([
+            'status' => 'submitted',
+            'submitted_at' => now(),
+        ]);
+
+        return redirect()->route('performance-agreements.show', $performanceAgreement)->with('success', 'Perjanjian Kerja berhasil diajukan untuk persetujuan.');
+    }
+
+    public function approve(PerformanceAgreement $performanceAgreement)
+    {
+        Gate::authorize('approve', $performanceAgreement);
+
+        $performanceAgreement->update([
+            'status' => 'approved',
+            'approved_at' => now(),
+        ]);
+
+        return redirect()->route('performance-agreements.approvals.index')->with('success', 'Perjanjian Kinerja telah disetujui.');
+    }
+
+    public function revert(Request $request, PerformanceAgreement $performanceAgreement): RedirectResponse
+    {
+        Gate::authorize('revert', $performanceAgreement);
+
+        $request->validate([
+            'rejection_reason' => 'required|string|min:3',
+        ]);
+
+        $performanceAgreement->update([
+            'status' => 'reverted',
+            'rejection_reason' => $request->input('rejection_reason')
+        ]);
+
+        return redirect()->route('performance-agreements.approvals.index')->with('success', 'Perjanjian Kinerja telah dikembalikan untuk revisi.');
     }
 }
