@@ -22,7 +22,7 @@
             'cascaded from' => $pa->cascaded_from ?? 'null',
             'year' => $pa->year,
             'status' => $pa->status,
-            'actions' => view('performanceAgreements.partials.actions', compact('pa')),
+            'actions' => view('performance-agreements.partials.actions', compact('pa')),
         ];
     })">
 

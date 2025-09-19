@@ -27,23 +27,24 @@ Route::middleware('auth')->group(function () {
         Route::resource('/users', UserController::class);
     });
 
-    Route::middleware('role:Super Admin|Rektor|Dekan')->group(function () {
-        Route::resource('/performance-agreements', PerformanceAgreementController::class);
-        
-        Route::get('/performance-agreements/persetujuan', [PerformanceAgreementController::class, 'approvalList'])
-            ->name('performance-agreements.approvals.index');
+    Route::middleware('role:Super Admin|Rektor|Dekan')->group(function () {        
+        Route::get('/performance-agreements/persetujuan', [PerformanceAgreementController::class, 'persetujuanList'])
+            ->name('performance-agreements.persetujuan.index');
 
         Route::get('/performance-agreements/persetujuan/{performance_agreement}', [PerformanceAgreementController::class, 'approvalShow'])
-            ->name('performance-agreements.approvals.show');
+            ->name('performance-agreements.persetujuan.show');
 
         Route::post('/performance-agreements/{performance_agreement}/submit', [PerformanceAgreementController::class, 'submit'])
-            ->name('performance-agreements.submit');
+            ->name('performance-agreements.persetujuan.submit');
             
         Route::post('/performance-agreements/{performance_agreement}/approve', [PerformanceAgreementController::class, 'approve'])
-            ->name('performance-agreements.approve');
+            ->name('performance-agreements.persetujuan.approve');
             
         Route::post('/performance-agreements/{performance_agreement}/revert', [PerformanceAgreementController::class, 'revert'])
-        ->name('performance-agreements.revert');
+        ->name('performance-agreements.persetujuan.revert');
+
+        Route::resource('/performance-agreements', PerformanceAgreementController::class);
+
     });
 
     Route::middleware('role:Super Admin|Rektor|Dekan')->group(function () {

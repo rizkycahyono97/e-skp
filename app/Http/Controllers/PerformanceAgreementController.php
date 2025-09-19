@@ -30,7 +30,7 @@ class PerformanceAgreementController extends Controller
 
         $pas = PerformanceAgreement::where('user_id', Auth::id())->latest()->paginate(10);
             
-        return view('performanceAgreements.index', compact('header', 'breadcrumbs', 'pas'));
+        return view('performance-agreements.index', compact('header', 'breadcrumbs', 'pas'));
     }
 
     public function show(PerformanceAgreement $performanceAgreement): View
@@ -52,7 +52,7 @@ class PerformanceAgreementController extends Controller
 
         // dd($pa->toArray());
 
-        return view('performanceAgreements.show', compact('performanceAgreement', 'breadcrumbs'));
+        return view('performance-agreements.show', compact('performanceAgreement', 'breadcrumbs'));
     }
 
     public function create()
@@ -63,7 +63,7 @@ class PerformanceAgreementController extends Controller
             ['name' => 'Create', 'url' => null],
         ];
 
-        return view('performanceAgreements.create', compact('breadcrumbs'));
+        return view('performance-agreements.create', compact('breadcrumbs'));
     }
 
     public function store(Request $request)
@@ -111,7 +111,7 @@ class PerformanceAgreementController extends Controller
             ['name' => 'Edit', 'url' => null],
         ];
 
-        return view('performanceAgreements.edit', compact('performanceAgreement', 'breadcrumbs'));
+        return view('performance-agreements.edit', compact('performanceAgreement', 'breadcrumbs'));
     }
 
     public function update(Request $request, PerformanceAgreement $performanceAgreement)
@@ -262,15 +262,21 @@ class PerformanceAgreementController extends Controller
         }
     }
 
-    public function approvalList(): View
+    public function persetujuanList(): View
     {
-        $approval = PerformanceAgreement::where('approver_id', Auth::id())
-            ->where('status', 'submitted')
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Performance Agreements', 'url' => route('performance-agreements.index')],
+            ['name' => 'Persetujuan', 'url' => null],
+        ];
+
+        $approvals = PerformanceAgreement::where('approver_id', Auth::id())
+            // ->where('status', 'submitted')
             ->with('user')
             ->latest('submitted_at')
             ->paginate(10);
 
-        return view('performance-agreements.list-approvals', compact('approval'));
+        return view('performance-agreements.persetujuan-list', compact('approvals', 'breadcrumbs'));
     }
 
     public function approvalShow(PerformanceAgreement $performanceAgreement): View
@@ -279,7 +285,7 @@ class PerformanceAgreementController extends Controller
 
         $performanceAgreement->load('user', 'workResults.indicators');
 
-        return view('performance-agreements.show-approvals', compact('performanceAgreement'));
+        return view('performance-agreements.persetujuan-show', compact('performanceAgreement'));
     }
 
     public function submit(PerformanceAgreement $performanceAgreement): RedirectResponse
@@ -303,7 +309,7 @@ class PerformanceAgreementController extends Controller
             'approved_at' => now(),
         ]);
 
-        return redirect()->route('performance-agreements.approvals.index')->with('success', 'Perjanjian Kinerja telah disetujui.');
+        return redirect()->route('performance-agreements.persetujuan.index')->with('success', 'Perjanjian Kinerja telah disetujui.');
     }
 
     public function revert(Request $request, PerformanceAgreement $performanceAgreement): RedirectResponse
@@ -319,6 +325,6 @@ class PerformanceAgreementController extends Controller
             'rejection_reason' => $request->input('rejection_reason')
         ]);
 
-        return redirect()->route('performance-agreements.approvals.index')->with('success', 'Perjanjian Kinerja telah dikembalikan untuk revisi.');
+        return redirect()->route('performance-agreements.persetujuan.index')->with('success', 'Perjanjian Kinerja telah dikembalikan untuk revisi.');
     }
 }

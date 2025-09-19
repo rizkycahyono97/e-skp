@@ -57,7 +57,8 @@
                 </a>
 
                 {{-- Tombol "Ajukan" berada di dalam formnya sendiri untuk memicu aksi 'submit' --}}
-                <form method="POST" action="{{ route('performance-agreements.submit', $performanceAgreement->id) }}"
+                <form method="POST"
+                    action="{{ route('performance-agreements.persetujuan.submit', $performanceAgreement->id) }}"
                     onsubmit="return confirm('Apakah Anda yakin ingin mengajukan Perjanjian Kinerja ini untuk persetujuan?');">
                     @csrf
                     <button type="submit"
