@@ -6,8 +6,8 @@
 
     <x-tables.table :headers="[
         'No',
-        'Nama Pengaju',
         'Judul Perjanjian',
+        'Nama Pengaju',
         'Unit Kerja',
         'Jabatan',
         'Tanggal Diajukan',
@@ -16,11 +16,11 @@
     ]" :rows="$approvals->map(function ($approval, $index) use ($approvals) {
         return [
             'no' => $index + 1 + ($approvals->currentPage() - 1) * $approvals->perPage(),
-            'nama pengaju' => $approval->user->username,
             'judul perjanjian' => $approval->title,
+            'nama pengaju' => $approval->user->username,
             'unit kerja' => $approval->user->unit->unit_name,
             'jabatan' => $approval->user->position->position_name,
-            'tanggal diajukan' => $approval->submitted_at,
+            'tanggal diajukan' => $approval->submitted_at?->format('Y-m-d'),
             'status' => $approval->status,
             'actions' => view('performance-agreements.partials.approval-actions', compact('approval'))->render(),
         ];

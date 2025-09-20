@@ -281,7 +281,7 @@ class PerformanceAgreementController extends Controller
 
     public function approvalShow(PerformanceAgreement $performanceAgreement): View
     {
-        // Gate::authorize('approve', $performanceAgreement);
+        Gate::authorize('approve', $performanceAgreement);
 
         $performanceAgreement->load('user', 'workResults.indicators');
 

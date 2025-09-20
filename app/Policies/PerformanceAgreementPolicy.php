@@ -37,7 +37,7 @@ class PerformanceAgreementPolicy
      */
     public function update(User $user, PerformanceAgreement $performanceAgreement): bool
     {
-        return $user->id === $performanceAgreement->user_id;
+        return $user->id === $performanceAgreement->user_id && in_array($performanceAgreement->status, ['draft', 'reverted']);
     }
 
     /**
@@ -62,5 +62,22 @@ class PerformanceAgreementPolicy
     public function forceDelete(User $user, PerformanceAgreement $performanceAgreement): bool
     {
         return false;
+    }
+
+    // custom policy
+    public function submit(User $user, PerformanceAgreement $performanceAgreement): bool
+    {
+        // submit harus status pa === 'draft' atau 'reverted'
+        return $user->id === $performanceAgreement->user_id && in_array($performanceAgreement->status, ['draft', 'reverted']);
+    }
+
+    public function approve(User $user, PerformanceAgreement $performanceAgreement): bool
+    {
+        return $user->id === $performanceAgreement->approver_id && $performanceAgreement->status === 'submitted';
+    }
+
+    public function revert(User $user, PerformanceAgreement $performanceAgreement): bool
+    {
+        return $this->approve($user, $performanceAgreement);
     }
 }

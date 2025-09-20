@@ -7,16 +7,8 @@
 
                 {{-- Kolom Kiri: Detail Konten PA --}}
                 <div class="lg:col-span-2 space-y-6">
-                    {{-- Card Informasi Utama --}}
-                    <div
-                        class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md">
-                        <div class="p-6">
-                            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
-                                {{ $performanceAgreement->title }}</h1>
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Tahun:
-                                {{ $performanceAgreement->year }}</p>
-                        </div>
-                    </div>
+                    <x-partials.header title="{{ $performanceAgreement->title }}"
+                        description="Tahun: {{ $performanceAgreement->year }}" />
 
                     {{-- Daftar Hasil Kerja dan Indikator --}}
                     <div

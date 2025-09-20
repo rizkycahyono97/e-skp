@@ -19,16 +19,16 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // define permission
         $permissions = [
-            'show',
-            'buat',
-            'edit',
-            'submit',
-            'approve',
-            'manage',
-            'fill',
-            'revert',
-            'evaluate',
-            'print',
+            // 'show',
+            // 'buat',
+            // 'edit',
+            // 'submit',
+            // 'approve',
+            // 'manage',
+            // 'fill',
+            // 'revert',
+            // 'evaluate',
+            // 'print',
         ];
 
         //buat permission
@@ -39,25 +39,25 @@ class RolesAndPermissionsSeeder extends Seeder
         // define role
         $roles = [
             'Admin' => [
-                'show', 'buat', 'approve', 'edit', 'manage', 'print', 'submit', 'fill', 'revert', 'evaluate'
+                // 'show', 'buat', 'approve', 'edit', 'manage', 'print', 'submit', 'fill', 'revert', 'evaluate'
             ],
             'Rektor' => [
-                'show', 'buat', 'approve', 'edit', 'manage', 'print'
+                // 'show', 'buat', 'approve', 'edit', 'manage', 'print'
             ],
             'Dekan' => [
-                'show', 'buat', 'edit', 'submit', 'approve', 'manage', 'print'
+                // 'show', 'buat', 'edit', 'submit', 'approve', 'manage', 'print'
             ],
             'Kaprodi' => [
-                'show', 'buat', 'edit', 'submit', 'approve', 'manage', 'print'
+                // 'show', 'buat', 'edit', 'submit', 'approve', 'manage', 'print'
             ],
             'Dosen' => [
-                'show', 'buat', 'edit', 'submit', 'fill', 'print'
+                // 'show', 'buat', 'edit', 'submit', 'fill', 'print'
             ],
             'Tendik' => [
-                'show', 'buat', 'edit', 'submit', 'fill', 'print'
+                // 'show', 'buat', 'edit', 'submit', 'fill', 'print'
             ],
             'Pejabat Penilai' => [
-                'show', 'approve', 'revert', 'evaluate', 'print'
+                // 'show', 'approve', 'revert', 'evaluate', 'print'
             ],
             'Super Admin' => array_column(Permission::all()->toArray(), 'name'), // full akses untuk admin
         ];
