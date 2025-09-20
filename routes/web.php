@@ -47,12 +47,13 @@ Route::middleware('auth')->group(function () {
 
     });
 
+    // work-cascading
     Route::middleware('role:Super Admin|Rektor|Dekan')->group(function () {
-        Route::get('/work-cascading/create/{indicator}', [WorkCascadingController::class, 'create'])
-        ->name('work-cascading.create');
+        Route::get('/work-cascading/pa-create/{indicator}', [WorkCascadingController::class, 'paCreate'])
+        ->name('work-cascading.pa-create');
 
-        Route::post('/work-cascading', [WorkCascadingController::class, 'store'])
-            ->name('work-cascadings.store');
+        Route::post('/work-cascading', [WorkCascadingController::class, 'paStore'])
+            ->name('work-cascadings.pa-store');
 
     });
     

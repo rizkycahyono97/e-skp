@@ -116,7 +116,7 @@
                             </td>
                             <td class="px-4 py-3 text-center">
                                 <div class="flex items-center justify-center gap-2">
-                                    <a href="{{ route('work-cascading.create', $indicator->id) }}">
+                                    <a href="{{ route('work-cascading.pa-create', $indicator->id) }}">
                                         <button
                                             class="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600">Cascading</button>
                                     </a>

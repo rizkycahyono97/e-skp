@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class WorkCascadingController extends Controller
 {
-    public function create(Request $request, Indicator $indicator)
+    public function paCreate(Request $request, Indicator $indicator)
     {
         $breadcrumbs = [
             ['name' => 'Dashboard', 'url' => route('dashboard')],
@@ -45,7 +45,7 @@ class WorkCascadingController extends Controller
 
         $users = $query->latest()->paginate(10)->withQueryString();
 
-        return view('workCascadings.create', [
+        return view('workCascadings.pa-create', [
             'parentIndicator' => $parentIndicator,
             'users' => $users,
             'units' => $units,
@@ -55,7 +55,7 @@ class WorkCascadingController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function paStore(Request $request)
     {
         $request->validate([
             'parent_indicator_id' => 'required|exists:indicators,id',
@@ -113,7 +113,7 @@ class WorkCascadingController extends Controller
                 
             if ($existingCascading) {
                 session()->forget('success');
-                return redirect()->route('work-cascading.create', $parentIndicator->id)
+                return redirect()->route('work-cascading.pa-create', $parentIndicator->id)
                     ->with('error', 'Indicator sudah dicascading ke user ' . $targetUser->name . ' sebelumnya.');
             }
         } else {
