@@ -81,7 +81,7 @@
     </div>
 
     {{-- Form Utama & Tabel User --}}
-    <form method="POST" action="{{ route('work-cascadings.pa-store') }}">
+    <form method="POST" action="{{ route('work-cascading.pa-store') }}">
         @csrf
         <input type="hidden" name="parent_indicator_id" value="{{ $parentIndicator->id }}">
         {{-- <input type="hidden" name="child_pa_id" value="{{ $parentIndicator->workResult->performanceAgreement->id }}"> --}}
