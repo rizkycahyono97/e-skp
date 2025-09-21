@@ -91,6 +91,57 @@ class WorkCascadingController extends Controller
         }
     }
 
+    public function skpCreate(Request $request, Indicator  $indicator)
+    {
+         $breadcrumbs = [
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Cascading SKP', 'url' => null],
+            ['name' => 'Create', 'url' => null]
+        ];
+
+        $parentIndicator = Indicator::with('workResult.skpPlan.user')->findOrFail($indicator->id);
+        
+        // Authorization check - pastikan indicator milik user yang login
+        // if ($parentIndicator->workResult->skpPlan->user_id !== Auth::id()) {
+        //     abort(403, 'Anda tidak memiliki akses ke indicator ini.');
+        // }
+
+        // Dapatkan unit_id dari user yang login
+        $currentUserUnitId = Auth::user()->unit_id;
+        
+        $units = Unit::where('id', $currentUserUnitId)->get(); // Hanya unit user sendiri
+        $positions = Position::all();
+
+        // Query user yang berada dalam unit yang sama dengan user login
+        $query = User::with(['unit', 'position', 'roles'])
+            ->where('unit_id', $currentUserUnitId)
+            ->where('id', '!=', Auth::id()); // Exclude current user
+
+        // Filter berdasarkan position jika ada
+        if ($request->filled('position')) {
+            $query->where('position_id', $request->position);
+        }
+
+        // Filter berdasarkan search
+        if ($request->filled('search')) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('nip', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $users = $query->latest()->paginate(10)->withQueryString();
+
+        return view('workCascadings.skp-create', [
+            'parentIndicator' => $parentIndicator,
+            'users' => $users,
+            'units' => $units,
+            'positions' => $positions,
+            'filters' => $request->only(['position', 'search']),
+            'breadcrumbs' => $breadcrumbs,
+        ]);
+    }
+
     /**
      * helper cascade indicator to a specific user
      */
