@@ -19,6 +19,7 @@ class SkpPlan extends Model
         'approver_id',
         'category_id',
         'title',
+        'cascaded_from',
         'year',
         'duration_start',
         'duration_end',

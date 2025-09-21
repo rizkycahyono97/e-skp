@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Indicator;
 use App\Models\PerformanceAgreement;
 use App\Models\User;
+use App\Models\WorkCascading;
 use App\Models\WorkResult;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;

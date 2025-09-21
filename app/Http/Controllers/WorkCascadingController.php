@@ -185,6 +185,7 @@ class WorkCascadingController extends Controller
                     'approver_id' => $targetUser->supervisor_id ?? null,
                     'category_id' => null,
                     'title' => $parentIndicator->description,
+                    'cascaded_from' => Auth::user()->name,
                     'year' => $parentSkp->year,
                     'duration_start' => null,
                     'duration_end' => null,
