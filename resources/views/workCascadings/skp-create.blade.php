@@ -2,6 +2,12 @@
 
     <x-partials.breadcrumbs :items="$breadcrumbs" />
 
+    @if (session('error'))
+        <x-partials.alert type="error" :message="session('error')" />
+    @elseif (session('success'))
+        <x-partials.alert type="success" :message="session('success')" />
+    @endif
+
     {{-- @dd($parentIndicator->toArray()); --}}
 
     {{-- Panel atas --}}

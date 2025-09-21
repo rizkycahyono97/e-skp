@@ -80,5 +80,14 @@ class UserSeeder extends Seeder
             'position_id' => $dosenPosition->id,
         ]);
         $userDosen->assignRole('Dosen');
+
+        $userDosenFakultas = User::firstOrCreate(['nip' => '32412'], [
+            'name' => 'Dosen Fakultas',
+            'username' => 'Dr. Dosen Fakultas',
+            'email' => 'dosenfakultas@unida.ac.id',
+            'password' => Hash::make('test123'),
+            'unit_id' => $fakultasUnit->id,
+            'position_id' => $dosenPosition->id,
+        ]);
     }
 }

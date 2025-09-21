@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Indicator;
 use App\Models\PerformanceAgreement;
 use App\Models\Position;
+use App\Models\SkpPlan;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\WorkCascading;
@@ -63,6 +64,8 @@ class WorkCascadingController extends Controller
             'user_ids.*' => 'exists:users,id',
         ]);
 
+        // dd($request->toArray());
+
         //eager loading
         $parentIndicator = Indicator::with(['workResult.performanceAgreement.user'])
             ->findOrFail($request->parent_indicator_id);
@@ -106,23 +109,19 @@ class WorkCascadingController extends Controller
         //     abort(403, 'Anda tidak memiliki akses ke indicator ini.');
         // }
 
-        // Dapatkan unit_id dari user yang login
         $currentUserUnitId = Auth::user()->unit_id;
         
-        $units = Unit::where('id', $currentUserUnitId)->get(); // Hanya unit user sendiri
+        $units = Unit::where('id', $currentUserUnitId)->get(); 
         $positions = Position::all();
 
-        // Query user yang berada dalam unit yang sama dengan user login
         $query = User::with(['unit', 'position', 'roles'])
             ->where('unit_id', $currentUserUnitId)
-            ->where('id', '!=', Auth::id()); // Exclude current user
+            ->where('id', '!=', Auth::id()); 
 
-        // Filter berdasarkan position jika ada
         if ($request->filled('position')) {
             $query->where('position_id', $request->position);
         }
 
-        // Filter berdasarkan search
         if ($request->filled('search')) {
             $query->where(function($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
@@ -142,6 +141,76 @@ class WorkCascadingController extends Controller
         ]);
     }
 
+    public function skpStore(Request $request)
+    {
+        $validated = $request->validate([
+            'parent_indicator_id' => 'required|exists:indicators,id',
+            'user_ids' => 'required|array',
+            'user_ids.*' => 'exists:users,id',
+        ]);
+
+        $parentIndicator = Indicator::with('workResult.skpPlan')->findOrFail($validated['parent_indicator_id']);
+        $parentSkp = $parentIndicator->workResult->performanceAgreement;
+
+        if (!$parentSkp) {
+            return redirect()->back()->with('error', 'SKP Plan untuk atasan belum ada, tidak bisa cascading.');
+        }
+
+        $messages = [];
+        $status = 'success'; 
+
+        foreach ($validated['user_ids'] as $userId) {
+            $targetUser = User::findOrFail($userId);
+
+            $existingSkp = SkpPlan::where('user_id', $targetUser->id)
+                ->where('year', $parentSkp->year)
+                ->first();
+
+            if ($existingSkp) {
+                $childSkp = $existingSkp;
+
+                $existingCascading = WorkCascading::where('parent_indicator_id', $parentIndicator->id)
+                    ->where('child_skp_id', $childSkp->id)
+                    ->exists();
+
+                if ($existingCascading) {
+                    $messages[] = "Indicator sudah dicascading ke user {$targetUser->name} sebelumnya.";
+                    $status = 'error'; 
+                    continue;
+                }
+            } else {
+                $childSkp = SkpPlan::create([
+                    'user_id' => $targetUser->id,
+                    'pa_id' => null,
+                    'approver_id' => $targetUser->supervisor_id ?? null,
+                    'category_id' => null,
+                    'year' => $parentSkp->year,
+                    'duration_start' => null,
+                    'duration_end' => null,
+                    'status' => 'draft',
+                ]);
+            }
+
+            WorkCascading::create([
+                'parent_indicator_id' => $parentIndicator->id,
+                'child_pa_id' => null,
+                'child_skp_id' => $childSkp->id,
+            ]);
+
+            $unitName = Unit::find($targetUser->unit_id)->unit_name ?? null;
+            $parentIndicator->update([
+                'target' => $unitName,
+                'is_cascaded' => true,
+            ]);
+
+            $messages[] = "Berhasil cascading ke user {$targetUser->name}";
+        }
+
+        return redirect()
+            ->route('performance-agreements.show', $parentIndicator->workResult->performanceAgreement->id)
+            ->with($status, implode(' ', $messages));
+    }
+
     /**
      * helper cascade indicator to a specific user
      */
@@ -149,7 +218,7 @@ class WorkCascadingController extends Controller
     {
         $targetUser = User::findOrFail($userId);
 
-        // Check if the target user already has a PA for the same year
+        // Check jika sama tahunya dari targetuser
         $existingPA = PerformanceAgreement::where('user_id', $targetUser->id)
             ->where('year', $parentIndicator->workResult->performanceAgreement->year)
             ->first();

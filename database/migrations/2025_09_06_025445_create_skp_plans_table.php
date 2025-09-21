@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('approver_id')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->year('year');
-            $table->date('duration_start');
-            $table->date('duration_end');
+            $table->date('duration_start')->nullable();
+            $table->date('duration_end')->nullable();
             $table->enum('status', ['draft', 'submitted', 'reverted', 'approved']);
             $table->text('rejection_reason')->nullable();
             $table->timestamp('submitted_at')->nullable();

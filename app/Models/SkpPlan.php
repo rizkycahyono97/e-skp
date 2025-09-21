@@ -14,6 +14,10 @@ class SkpPlan extends Model
     use HasFactory, HasRoles;
 
     protected $fillable = [
+        'user_id',
+        'pa_id',
+        'approver_id',
+        'category_id',
         'year',
         'duration_start',
         'duration_end',
