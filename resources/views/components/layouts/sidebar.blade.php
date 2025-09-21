@@ -77,9 +77,9 @@
                             </svg>
                         </button>
                         <ul id="skp-dropdown" class="hidden py-2 space-y-2">
-                            @role('Super Admin|Rektor|Dekan|Kaprodi')
+                            @role('Super Admin|Rektor|Dekan|Kaprodi|Dosen|Tendik')
                                 <li>
-                                    <a href="#"
+                                    <a href="{{ route('skp-plans.index') }}"
                                         class="flex items-center w-full p-2 text-slate-100 transition duration-75 rounded-lg pl-11 group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700">SKP</a>
                                 </li>
                             @endrole

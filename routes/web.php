@@ -4,6 +4,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PerformanceAgreementController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SkpPlanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkCascadingController;
 use App\Models\PerformanceAgreement;
@@ -45,6 +46,11 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('/performance-agreements', PerformanceAgreementController::class);
 
+    });
+
+    // SKP
+    Route::middleware('role:Super Admin|Dekan|Kaprodi|Dosen|Tendik')->group(function () {
+        Route::resource('/skp-plans', SkpPlanController::class);
     });
 
     // work-cascading
