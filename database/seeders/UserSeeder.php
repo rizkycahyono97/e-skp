@@ -89,5 +89,6 @@ class UserSeeder extends Seeder
             'unit_id' => $fakultasUnit->id,
             'position_id' => $dosenPosition->id,
         ]);
+        $userDosenFakultas->assignRole('Dosen');
     }
 }

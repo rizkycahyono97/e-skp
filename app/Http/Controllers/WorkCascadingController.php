@@ -181,9 +181,10 @@ class WorkCascadingController extends Controller
             } else {
                 $childSkp = SkpPlan::create([
                     'user_id' => $targetUser->id,
-                    'pa_id' => null,
+                    'pa_id' => $parentSkp->id,
                     'approver_id' => $targetUser->supervisor_id ?? null,
                     'category_id' => null,
+                    'title' => $parentIndicator->description,
                     'year' => $parentSkp->year,
                     'duration_start' => null,
                     'duration_end' => null,
