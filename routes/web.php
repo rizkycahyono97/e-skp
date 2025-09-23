@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JenisKegiatanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PerformanceAgreementController;
 use App\Http\Controllers\PositionController;
@@ -70,4 +71,5 @@ Route::middleware('auth')->group(function () {
     
     Route::resource('/roles', RoleController::class);
     Route::resource('/positions', PositionController::class);
+    Route::resource('/jenis-kegiatans', JenisKegiatanController::class);
 });
