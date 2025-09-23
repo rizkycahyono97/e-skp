@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('skp_id')->nullable()->constrained('skp_plans')->cascadeOnDelete();
             $table->foreignId('pa_id')->nullable()->constrained('performance_agreements')->cascadeOnDelete();
+            $table->foreignId('jenis_kegiatan_id')->nullable()->constrained('jenis_kegiatans')->nullOnDelete();
             $table->text('description');
             $table->string('penugasan_dari')->nullable();
             // $table->boolean('is_from_cascading')->nullable();

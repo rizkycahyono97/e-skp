@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PerformanceAgreementsSeeder::class,
             SkpSeeder::class,
+            JenisKegiatasSeeder::class,
         ]);
     }
 }

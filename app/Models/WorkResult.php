@@ -55,4 +55,9 @@ class WorkResult extends Model
     {
         return $this->belongsTo(PerformanceAgreement::class, 'pa_id', 'id');
     }
+
+    public function jenisKegiatan(): BelongsTo
+    {
+        return $this->belongsTo(JenisKegiatan::class, 'jenis_kegiatan_id');
+    }
 }
