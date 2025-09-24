@@ -33,8 +33,8 @@
     </a>
 
     {{-- Tombol Ikon Delete dengan Tooltip Kustom --}}
-    <form action="#" method="POST" class="inline"
-        onsubmit="return confirm('Apakah Anda yakin ingin menghapus Role ini?');">
+    <form action="{{ route('jenis-kegiatans.destroy', $jenisKegiatan->id) }}" method="POST" class="inline"
+        onsubmit="return confirm('Apakah Anda yakin ingin menghapus Jenis Kegiatan ini?');">
         @csrf
         @method('DELETE')
         <button type="submit" class="group relative flex items-center">
@@ -48,7 +48,7 @@
             </div>
             <span
                 class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                Delete Role
+                Delete Jenis Kegiatan
             </span>
         </button>
     </form>

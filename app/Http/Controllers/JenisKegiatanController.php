@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JenisKegiatan;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class JenisKegiatanController extends Controller
@@ -35,15 +36,16 @@ class JenisKegiatanController extends Controller
         return view('jenis-kegiatans.create', compact('breadcrumbs'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'nama' => 'required|string|unique:jenis_kegiatan',
+            'nama' => 'required|string|unique:jenis_kegiatans,nama|min:3',
         ]);
+        // dd($validated);
         JenisKegiatan::create($validated);
 
         return  redirect()->route('jenis-kegiatans.index')
-            ->with('successs', 'Jenis Kegiatan succesfully created');
+            ->with('success', 'Jenis Kegiatan succesfully created');
     }
 
     public function show(JenisKegiatan $jenisKegiatan)
