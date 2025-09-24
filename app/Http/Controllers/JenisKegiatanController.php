@@ -59,7 +59,7 @@ class JenisKegiatanController extends Controller
             ['label' => 'Nama', 'value' => $jenisKegiatan->nama]
         ];
 
-        return view('jenis-kegiatans.show', compact('breadcrumbs', 'fields'));
+        return view('jenis-kegiatans.show', compact('breadcrumbs', 'fields', 'jenisKegiatan'));
     }
 
     public function edit(JenisKegiatan $jenisKegiatan)
@@ -70,7 +70,7 @@ class JenisKegiatanController extends Controller
             ['name' => 'Edit', 'url' => null],
         ];
 
-        return view('jenis-kegiatans.edit', compact('breadcrumbs'));
+        return view('jenis-kegiatans.edit', compact('jenisKegiatan', 'breadcrumbs'));
     }
 
     public function update(Request $request, JenisKegiatan $jenisKegiatan)

@@ -3,7 +3,7 @@
 
     <x-partials.header :title="$header['title']" :description="$header['description']">
         <x-slot name="actions">
-            <a href="{{ route('roles.create') }}">
+            <a href="{{ route('jenis-kegiatans.create') }}">
                 <button type="button" class="text-white bg-green-600 hover:bg-green-700 px-5 py-2.5 rounded-lg">
                     Buat Jenis Kegiatan
                 </button>

@@ -131,7 +131,8 @@
                             @role('Super Admin')
                                 <li>
                                     <a href="{{ route('jenis-kegiatans.index') }}"
-                                        class="flex items-center w-full p-2 text-slate-100 transition duration-75 rounded-lg pl-11 group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700">Position</a>
+                                        class="flex items-center w-full p-2 text-slate-100 transition duration-75 rounded-lg pl-11 group hover:bg-slate-800 dark:text-white dark:hover:bg-gray-700">Jenis
+                                        Kegiatan</a>
                                 </li>
                             @endrole
                         </ul>
